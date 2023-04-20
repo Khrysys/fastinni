@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "fastinni"
+version = "0.1.0"
+description = "A simple FastAPI server"
+authors = ["Khrysys <admin@khrysystem.dev>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+fastapi = "^0.95.1"
+uvicorn = "^0.21.1"
+sqlalchemy = "^2.0.9"
+python-dotenv = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

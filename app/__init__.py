@@ -1,0 +1,6 @@
+from fastapi import FastAPI
+
+def create_app(config):
+    app = FastAPI()
+
+    return app
