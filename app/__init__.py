@@ -7,7 +7,7 @@ from fastapi_csrf_protect.exceptions import CsrfProtectError
 from sqlalchemy import MetaData, create_engine
 from sqlalchemy.orm import sessionmaker
 
-from .api.v1 import v1 as v1_router
+from .v1 import v1 as v1_router
 from .config import Settings
 
 @lru_cache
