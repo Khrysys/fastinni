@@ -1,9 +1,11 @@
-from pydantic import BaseModel
 from os import getenv, urandom
 
+from pydantic import BaseModel
+
+
 class SqlAlchemySettings(BaseModel):
-    SQLALCHEMY_SCHEMA = getenv('SQLALCHEMY_SCHEMA', 'postgresql')
-    SQLALCHEMY_DRIVER = getenv('SQLALCHEMY_DRIVER', 'psycopg2')
+    SQLALCHEMY_SCHEMA = 'postgresql'
+    SQLALCHEMY_DRIVER = 'asyncpg'
     SQLALCHEMY_USERNAME = getenv('SQLALCHEMY_USERNAME', 'postgres')
     SQLALCHEMY_PASSWORD = getenv('SQLALCHEMY_PASSWORD', 'postgres')
     SQLALCHEMY_HOST = getenv('SQLALCHEMY_HOST', 'localhost')
@@ -15,6 +17,11 @@ class SqlAlchemySettings(BaseModel):
         SQLALCHEMY_PASSWORD, SQLALCHEMY_HOST, SQLALCHEMY_PORT,
         SQLALCHEMY_DB_NAME
     )
+
+class UserSecrets(BaseModel):
+    reset_password_token_secret = getenv('RESET_PASSWORD_TOKEN_SECRET', urandom(128).hex())
+    verification_token_secret = getenv('VERIFICATION_TOKEN_SECRET', urandom(128).hex())
+    jwt_strategy_secret = getenv('JWT_STRATEGY_SECRET', urandom(128).hex())
     
 class CsrfSettings(BaseModel):
     secret_key:str = getenv('CSRF_SECRET_KEY', urandom(128).hex())
@@ -22,4 +29,5 @@ class CsrfSettings(BaseModel):
 class Settings(BaseModel):
     sqlalchemy_settings = SqlAlchemySettings()
     csrf_settings = CsrfSettings()
+    user_secrets = UserSecrets()
     

@@ -1,5 +1,5 @@
 from fastapi import APIRouter
 
-v1 = APIRouter(prefix='/api/v1')
+v1 = APIRouter(prefix='/v1')
 
 from . import csrf, user
