@@ -1,33 +1,22 @@
 from os import getenv, urandom
 
-from pydantic import BaseModel
+LOGIN_SECRET_KEY = getenv('LOGIN_SECRET_KEY', urandom(128).hex())
+LOGIN_PATH_URI = '/latest/user/login'
+LOGIN_SALT_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+LOGIN_DEFAULT_PBKDF2_ITERATIONS = 600000
 
+CORS_ALLOWED_ORIGINS = getenv('CORS_ALLOWED_ORIGINS', '127.0.0.1:5000;127.0.0.1:8000').split(';')
 
-class SqlAlchemySettings(BaseModel):
-    SQLALCHEMY_SCHEMA = 'postgresql'
-    SQLALCHEMY_DRIVER = 'asyncpg'
-    SQLALCHEMY_USERNAME = getenv('SQLALCHEMY_USERNAME', 'postgres')
-    SQLALCHEMY_PASSWORD = getenv('SQLALCHEMY_PASSWORD', 'postgres')
-    SQLALCHEMY_HOST = getenv('SQLALCHEMY_HOST', 'localhost')
-    SQLALCHEMY_PORT = getenv('SQLALCHEMY_PORT', '5432')
-    SQLALCHEMY_DB_NAME = getenv('SQLALCHEMY_DB_NAME', 'db-fastinni')
-        
-    SQLALCHEMY_URL = '{}+{}://{}:{}@{}:{}/{}'.format(
-        SQLALCHEMY_SCHEMA, SQLALCHEMY_DRIVER, SQLALCHEMY_USERNAME, 
-        SQLALCHEMY_PASSWORD, SQLALCHEMY_HOST, SQLALCHEMY_PORT,
-        SQLALCHEMY_DB_NAME
-    )
+CSRF_SECRET_KEY = getenv('CSRF_SECRET_KEY', urandom(128).hex())
 
-class UserSecrets(BaseModel):
-    reset_password_token_secret = getenv('RESET_PASSWORD_TOKEN_SECRET', urandom(128).hex())
-    verification_token_secret = getenv('VERIFICATION_TOKEN_SECRET', urandom(128).hex())
-    jwt_strategy_secret = getenv('JWT_STRATEGY_SECRET', urandom(128).hex())
-    
-class CsrfSettings(BaseModel):
-    secret_key:str = getenv('CSRF_SECRET_KEY', urandom(128).hex())
+SQLALCHEMY_DATABASE_URI = 'postgresql+asyncpg://{}:{}@{}:{}/{}'.format(
+    getenv('SQLALCHEMY_USERNAME', 'postgres'), 
+    getenv('SQLALCHEMY_PASSWORD', 'postgres'), 
+    getenv('SQLALCHEMY_HOST', 'localhost'), 
+    getenv('SQLALCHEMY_PORT', '5432'),
+    getenv('SQLALCHEMY_DB_NAME', 'db-fastinni')
+)
 
-class Settings(BaseModel):
-    sqlalchemy_settings = SqlAlchemySettings()
-    csrf_settings = CsrfSettings()
-    user_secrets = UserSecrets()
-    
+TRUSTED_HOSTS = getenv('TRUSTED_HOSTS', '127.0.0.1:5000;127.0.0.1:8000').split(';')
+
+GZIP_MINIMUM_SIZE = int(getenv('GZIP_MINIMUM_SIZE', 1000))

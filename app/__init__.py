@@ -1,77 +1,44 @@
-from functools import lru_cache
-
 from fastapi import FastAPI, Request
-from fastapi.responses import JSONResponse
-from fastapi_csrf_protect import CsrfProtect
-from fastapi_csrf_protect.exceptions import CsrfProtectError
-from sqlalchemy import MetaData
-from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
+from fastapi.middleware.asyncexitstack import AsyncExitStackMiddleware
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
+from fastapi.middleware.httpsredirect import HTTPSRedirectMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.openapi.utils import get_openapi
+from fastapi.responses import JSONResponse
+from fastapi_csrf_protect.exceptions import CsrfProtectError
 
-from .config import Settings
-from .v1 import v1 as v1_router
+from .extensions import sqlalchemy
 
+app = FastAPI(version = "0.1.0", redoc_url=None, docs_url=None, openapi_url=None)
 
-@lru_cache
-def get_settings():
-    return settings
+# -----------------------
+# | FASTAPI MIDDLEWARES |
+# -----------------------
+app.add_middleware(AsyncExitStackMiddleware)
+app.add_middleware(CORSMiddleware, allow_origins=extensions.settings['CORS_ALLOWED_ORIGINS'], 
+                    allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
+app.add_middleware(HTTPSRedirectMiddleware)
+app.add_middleware(GZipMiddleware, minimum_size=extensions.settings['GZIP_MINIMUM_SIZE'])
+app.add_middleware(TrustedHostMiddleware, allowed_hosts=extensions.settings['TRUSTED_HOSTS'])
 
-settings = Settings()
-#print('Current Settings: \n{}'.format(settings.dict()))
-fastapi = FastAPI()
-fastapi.include_router(v1_router)
+# ----------------------
+# | CUSTOM MIDDLEWARES |
+# ----------------------
+app.add_middleware(sqlalchemy.middleware, sqlalchemy=sqlalchemy)
 
-engine = create_async_engine(get_settings().sqlalchemy_settings.SQLALCHEMY_URL)
-engine.connect()
-async_session_maker = async_sessionmaker(engine)
-
-
-
-@CsrfProtect.load_config
-def get_csrf_load_config():
-    return get_settings().csrf_settings
-
-@fastapi.get("/docs", include_in_schema=False)
-async def custom_swagger_ui_html(req: Request):
-    root_path = req.scope.get("root_path", "").rstrip("/")
-    openapi_url = root_path + fastapi.openapi_url
-    return get_swagger_ui_html(
-        openapi_url=openapi_url,
-        title="API",
-    )
-
-'''
-@fastapi.get('/')
-async def get_():
-    return {'status': 'ok'}
-
-@fastapi.exception_handler(CsrfProtectError)
+# ----------------------
+# | EXCEPTION HANDLERS |
+# ----------------------
+@app.exception_handler(CsrfProtectError)
 def csrf_protect_exception_handler(request: Request, exc: CsrfProtectError):
-  return JSONResponse(status_code=exc.status_code, content={ 'detail':  exc.message })
+    return JSONResponse(status_code=exc.status_code, content={ 'detail':  exc.message })
+    
+@app.get("/docs", include_in_schema=False)
+async def get_documentation(request: Request):
+    return get_swagger_ui_html(openapi_url="/openapi.json", title="KhrySystem API Documentation")
 
-from . import tables
-from .tables.user import fastapi_users, auth_backend, UserRead, UserCreate, UserUpdate
-
-fastapi.include_router(
-    fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"]
-)
-fastapi.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/auth",
-    tags=["auth"],
-)
-fastapi.include_router(
-    fastapi_users.get_reset_password_router(),
-    prefix="/auth",
-    tags=["auth"],
-)
-fastapi.include_router(
-    fastapi_users.get_verify_router(UserRead),
-    prefix="/auth",
-    tags=["auth"],
-)
-fastapi.include_router(
-    fastapi_users.get_users_router(UserRead, UserUpdate),
-    prefix="/users",
-    tags=["users"],
-)'''
+@app.get("/openapi.json", include_in_schema=False)
+async def openapi():
+    return get_openapi(title=app.title, version=app.version, routes=app.routes)
