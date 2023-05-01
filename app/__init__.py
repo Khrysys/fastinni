@@ -7,21 +7,33 @@ from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.openapi.utils import get_openapi
 from fastapi.responses import JSONResponse
+from fastapi.routing import APIRouter
+from fastapi_csrf_protect import CsrfProtect
 from fastapi_csrf_protect.exceptions import CsrfProtectError
+from fastapi_login import LoginManager
+from fastapi_sql import SQLAlchemy
 
-from .extensions import sqlalchemy
+from .config import *
 
-app = FastAPI(version = "0.1.0", redoc_url=None, docs_url=None, openapi_url=None)
+@CsrfProtect.load_config # type: ignore
+def get_csrf_config():
+    return CsrfSettings()
+
+
+
+app = FastAPI(title='KSSI', version = "Highest Version: 1.0.0", docs_url=None, redoc_url='/docs')
+login = LoginManager(LOGIN_SECRET_KEY, LOGIN_PATH_URI)
+sqlalchemy = SQLAlchemy(app=app, database_uri=SQLALCHEMY_DATABASE_URI)
 
 # -----------------------
 # | FASTAPI MIDDLEWARES |
 # -----------------------
 app.add_middleware(AsyncExitStackMiddleware)
-app.add_middleware(CORSMiddleware, allow_origins=extensions.settings['CORS_ALLOWED_ORIGINS'], 
+app.add_middleware(CORSMiddleware, allow_origins=CORS_ALLOWED_ORIGINS, 
                     allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
-app.add_middleware(HTTPSRedirectMiddleware)
-app.add_middleware(GZipMiddleware, minimum_size=extensions.settings['GZIP_MINIMUM_SIZE'])
-app.add_middleware(TrustedHostMiddleware, allowed_hosts=extensions.settings['TRUSTED_HOSTS'])
+app.add_middleware(GZipMiddleware, minimum_size=GZIP_MINIMUM_SIZE)
+#app.add_middleware(TrustedHostMiddleware, allowed_hosts=TRUSTED_HOSTS) # uncomment these lines if you want that extra step in security
+# app.add_middleware(HTTPSRedirectMiddleware)
 
 # ----------------------
 # | CUSTOM MIDDLEWARES |
@@ -35,10 +47,11 @@ app.add_middleware(sqlalchemy.middleware, sqlalchemy=sqlalchemy)
 def csrf_protect_exception_handler(request: Request, exc: CsrfProtectError):
     return JSONResponse(status_code=exc.status_code, content={ 'detail':  exc.message })
     
-@app.get("/docs", include_in_schema=False)
-async def get_documentation(request: Request):
-    return get_swagger_ui_html(openapi_url="/openapi.json", title="KhrySystem API Documentation")
-
-@app.get("/openapi.json", include_in_schema=False)
-async def openapi():
-    return get_openapi(title=app.title, version=app.version, routes=app.routes)
+# ---------------
+# | API ROUTERS |
+# ---------------
+from .routers import dev, latest
+from .v100 import v100
+app.include_router(dev)
+app.include_router(latest)
+app.include_router(v100)

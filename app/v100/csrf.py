@@ -2,7 +2,7 @@ from fastapi import Depends
 from fastapi.responses import JSONResponse
 from fastapi_csrf_protect import CsrfProtect
 
-from . import v1 as app
+from . import v100 as app
 from ..routers import latest
 
 @latest.get('/csrftoken')

@@ -14,7 +14,7 @@ passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-dotenv = "^1.0.0"
 uvicorn = {extras = ["all"], version = "^0.21.1"}
 requests = {version = "^2.28.2", optional = true}
-fastapi-sql = "^0.1.6"
+fastapi-sql = "^0.3.2"
 
 [tool.poetry.group.dev.dependencies]
 requests = "^2.29.0"

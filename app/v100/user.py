@@ -7,7 +7,7 @@ from .. import login, sqlalchemy as db
 from ..routers import dev, latest
 from ..security import check_password_hash, generate_password_hash
 from ..sql.user import User, query_user
-from . import v1 as app
+from . import v100 as app
 
 
 @dev.get('/user/info/{username}')
@@ -18,7 +18,7 @@ async def get_user_with_username(username: str):
     
     if not user:
         raise HTTPException(status_code=404, detail='UID{} does not exist')
-    return repr(user)
+    return user.get_data()
 
 @dev.get('/user/login')
 @latest.get('/user/login')

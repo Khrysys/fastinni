@@ -4,3 +4,6 @@
 testing.py
 
 .vscode/settings.json
+
+migrations/
+alembic.ini

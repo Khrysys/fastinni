@@ -1,7 +1,7 @@
 from datetime import datetime
 
-from ..extensions import login
-from ..extensions import sqlalchemy as db
+from .. import sqlalchemy as db
+from .. import login
 
 class User(db.Model): # type: ignore
     __tablename__ = '__user_table__'
