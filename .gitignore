@@ -7,3 +7,7 @@ testing.py
 
 migrations/
 alembic.ini
+
+*.pem
+
+config.json

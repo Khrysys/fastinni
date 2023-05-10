@@ -9,17 +9,22 @@ readme = "README.md"
 python = "^3.9"
 fastapi = "^0.95.1"
 fastapi-csrf-protect = "^0.2.2"
-fastapi-login = "^1.9.0"
+fastapi-jwt-login = "^0.1.1"
+humanize = "^4.6.0"
+oauthlib = {extras = ["cryptography"], version = "^3.2.2"}
 passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-dotenv = "^1.0.0"
-uvicorn = {extras = ["all"], version = "^0.21.1"}
-requests = {version = "^2.28.2", optional = true}
-fastapi-sql = "^0.3.7"
 python-multipart = "^0.0.6"
-humanize = "^4.6.0"
+uvicorn = {extras = ["all"], version = "^0.21.1"}
+requests = {version = "^2.28.2"}
+sqlmodel = "^0.0.8"
+psycopg2-binary = "^2.9.6"
+authlib = "^0.15.3"
+itsdangerous = "^2.1.2"
+httpx = "^0.24.0"
 
 [tool.poetry.group.dev.dependencies]
-requests = "^2.29.0"
+pyOpenSSL = "^23.1.1"
 
 [build-system]
 requires = ["poetry-core"]
