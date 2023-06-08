@@ -11,3 +11,4 @@ alembic.ini
 *.pem
 
 config.json
+file.json

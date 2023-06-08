@@ -20,7 +20,7 @@ LOGIN_SALT_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ01234567
 LOGIN_DEFAULT_PBKDF2_ITERATIONS = 600000
 
 CSRF_SECRET_KEY = getenv('CSRF_SECRET_KEY', urandom(128).hex())
-SQLALCHEMY_DATABASE_URI = 'postgresql://{}:{}@{}:{}/{}'.format(
+SQLALCHEMY_DATABASE_URI = 'postgresql+asyncpg://{}:{}@{}:{}/{}'.format(
     getenv('SQLALCHEMY_USERNAME', 'postgres'), 
     getenv('SQLALCHEMY_PASSWORD', 'postgres'), 
     getenv('SQLALCHEMY_HOST', 'localhost'), 

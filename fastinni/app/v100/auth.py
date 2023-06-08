@@ -1,4 +1,4 @@
-# This file contains all the endpoints referring to authentication methods.
+"""# This file contains all the endpoints referring to authentication methods.
 # This includes the JWT, API Keys, OAuth, and anything else I come up with.
 # This does not include CSRF Tokens or anything CORS related.
 # The prefix for all routes in this file is "/auth"
@@ -41,9 +41,10 @@ async def check_jwt_token(request: Request, csrf_protect: CsrfProtect = Depends(
             case 'GOOGLE':
                 # Validate the token with Google
                 id = data['id']
-                gid = data['gid']
+                google_token = data['google_token']
                 token = data['token']
-                pass
+                with Session(db) as session:
+                    user: User = session.exec(select(User).where(User.id==id).where(User.google_token==gid))
         
             # Check for signin using user credentials
             case 'USER':
@@ -124,4 +125,4 @@ async def add_jwt_token_cookie(request: Request, data: OAuth2PasswordRequestForm
 from . import oauth
 app.include_router(oauth.app)
 
-dev.include_router(app)
+dev.include_router(app)"""
