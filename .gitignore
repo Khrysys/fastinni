@@ -1,14 +1,16 @@
-*.env
-*.pyc
+# Environment
+.env
 
-testing.py
+# Frontend Build Files
+node_modules
+src/*.js
+fastinni/pages
 
-.vscode/settings.json
+# Python files
+*__pycache__
 
-migrations/
-alembic.ini
+# VSCode Files
+.vscode
 
-*.pem
-
-config.json
-file.json
+# MacOS files
+*.DS_Store

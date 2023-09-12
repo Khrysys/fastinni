@@ -1,15 +1,13 @@
-from asyncio import run
-from os import getenv, path
-
-from dotenv import load_dotenv
+from os import path, getenv
 from uvicorn import Config, Server
-from os import path
+from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 
-load_dotenv()
+app = FastAPI(debug=True, title="Fastinni")
 
-from app import app
+from .extensions import csrf
 
-async def main():
+async def run():
     # SSL Configuration if it exists
     if path.exists('./key.pem'):
         ssl_key = './key.pem'
@@ -27,6 +25,6 @@ async def main():
     server = Server(config)
     await server.serve()
     
-
-if __name__ == '__main__':
-    run(main())
+app.mount(path='/', app=StaticFiles(directory='fastinni/pages', html=True), name='Pages')
+from .api import api 
+app.include_router(api, prefix="/api")

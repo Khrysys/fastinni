@@ -1,32 +1,22 @@
 [tool.poetry]
 name = "fastinni"
 version = "0.1.0"
-description = "A simple FastAPI server"
-authors = ["Khrysys <admin@khrysystem.dev>"]
+description = ""
+authors = ["Michael Piccirillo <70709374+Khrysys@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.11"
+alembic = "^1.12.0"
+asyncpg = "^0.28.0"
 fastapi = "^0.95.1"
-fastapi-csrf-protect = "^0.2.2"
-fastapi-jwt-login = "^0.1.1"
-humanize = "^4.6.0"
-oauthlib = {extras = ["cryptography"], version = "^3.2.2"}
-passlib = {extras = ["bcrypt"], version = "^1.7.4"}
 python-dotenv = "^1.0.0"
-python-multipart = "^0.0.6"
-uvicorn = {extras = ["all"], version = "^0.21.1"}
-requests = {version = "^2.28.2"}
-sqlmodel = "^0.0.8"
-psycopg2-binary = "^2.9.6"
-authlib = "^0.15.3"
-itsdangerous = "^2.1.2"
-httpx = "^0.24.0"
-slowapi = "^0.1.8"
-asyncpg = "^0.27.0"
+SQLAlchemy = {extras = ["async"], version = "^2.0.20"}
+uvicorn = {extras = ["all"], version = "^0.23.2"}
+fastapi-csrf-protect = "^0.3.2"
 
 [tool.poetry.group.dev.dependencies]
-pyOpenSSL = "^23.1.1"
+pyOpenSSL = "^23.2.0"
 
 [build-system]
 requires = ["poetry-core"]

@@ -1,0 +1,10 @@
+body {
+  background-color: #001;
+}
+
+.copyright {
+  justify-content: center;
+  font-size: 14px;
+  color: #eee;
+  text-align: center;
+}
