@@ -1,5 +1,9 @@
+import "./css/masthead.css"
+
 import { ImageContainer } from "./ImageContainer";
 
 export function Masthead() {
-	return <ImageContainer image={require("./img/loading.gif")} />;
+	return <div class="masthead">
+		<ImageContainer image={require("./img/loading.gif")} alt={"Masthead Image"} />
+	</div>;
 }

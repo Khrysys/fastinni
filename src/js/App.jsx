@@ -1,6 +1,7 @@
 import { ajax } from "jquery";
 import { useState, Component} from 'react';
 
+import { Header } from "./Header";
 import { Loading } from "./Loading";
 import { Masthead } from "./Masthead";
 import { Footer } from "./Footer";
@@ -13,27 +14,29 @@ export default class App extends Component {
 		};
 	}
 
+	/*
 	componentDidMount() {
-		ajax( "get-data" )
-		.done(function() {
-			alert( "success" );
+		ajax( "api/data" ).done(function() {
+			alert( ".done() ran" );
 			this.state = {
 				loading: false
 			}
-		})
-		.fail(function() {
-			alert( "error" );
-		})
-		.always(function() {
-			alert( "complete" );
+		}).fail(function() {
+			alert( ".fail() ran" );
+		}).always(function() {
+			alert(".always() ran");
 		});
 	}
+	*/
 
 	render() {
+		/*
 		if(this.state['loading']) {
 			return <Loading />
 		}
+		*/
 		return <>
+			<Header />
 			<Masthead />
 			<Footer />
 		</>

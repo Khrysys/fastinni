@@ -4,8 +4,9 @@ from starlette.routing import BaseRoute
 from fastapi import Depends
 from fastapi_csrf_protect import CsrfProtect
 
+from .routers import latest, dev
 
-csrf = APIRouter()
+csrf = APIRouter(prefix="/csrf")
 
 @csrf.get("/token", responses={200: {"csrf_token": 'cookie'}, 404: {"detail": "not found"}})
 async def get_csrf_token(csrf_protect: CsrfProtect = Depends()):
@@ -13,3 +14,5 @@ async def get_csrf_token(csrf_protect: CsrfProtect = Depends()):
     (token, signed) = csrf_protect.generate_csrf_tokens()
     csrf_protect.set_csrf_cookie(csrf_signed_token=signed, response=response)
     return response
+
+latest.include_router(csrf)
