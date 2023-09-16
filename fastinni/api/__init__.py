@@ -1,7 +1,7 @@
 from fastapi.routing import APIRouter
 from starlette.routing import Route
 
-api = APIRouter()
+api = APIRouter(prefix="/api")
 
 @api.get('/')
 def index():

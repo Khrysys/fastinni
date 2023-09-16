@@ -1,5 +1,5 @@
 import { ajax } from "jquery";
-import { useState, Component} from 'react';
+import { setState, Component} from 'react';
 
 import { Header } from "./Header";
 import { Loading } from "./Loading";
@@ -14,31 +14,31 @@ export default class App extends Component {
 		};
 	}
 
-	/*
 	componentDidMount() {
-		ajax( "api/data" ).done(function() {
-			alert( ".done() ran" );
-			this.state = {
-				loading: false
-			}
-		}).fail(function() {
+		ajax( "../api/latest" ).done(function() {
+			//alert( ".done() ran" );
+			this.setState({'loading': false})
+		}.bind(this)).fail(function() {
 			alert( ".fail() ran" );
 		}).always(function() {
-			alert(".always() ran");
+			//alert(".always() ran");
 		});
+		
 	}
-	*/
 
 	render() {
-		/*
-		if(this.state['loading']) {
-			return <Loading />
+		if(this.state.loading) {
+			return <>
+				< Header />
+				< Loading />
+				< Footer />
+			</>
 		}
-		*/
+
 		return <>
-			<Header />
-			<Masthead />
-			<Footer />
+			< Header />
+			< Masthead />
+			< Footer />
 		</>
 	}
 }

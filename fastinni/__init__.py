@@ -24,10 +24,8 @@ def create_app():
     # ----------------
     # - APP ASSEMBLY |
     # ----------------
-    app.mount(path='/', app=StaticFiles(directory='fastinni/pages', html=True), name='Pages') # type: ignore
+    app.mount(path='/pages', app=StaticFiles(directory='fastinni/pages', html=True), name='Pages') # type: ignore
     
-    api = APIRouter(prefix="/api")
-    api.add_api_route('/', index)
-    #from . import api
-    app.include_router(api) # type: ignore
+    from . import api
+    app.include_router(api.api) # type: ignore
     return app

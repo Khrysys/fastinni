@@ -1,17 +1,16 @@
-import React, { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { Provider } from "react-redux";
 import "./css/styles.css";
-
-const favicon = document.createElement("favicon");
+import App from "./components/App";
+import { Store } from "./Store";
 
 const rootElement = document.createElement("div");
 document.body.appendChild(rootElement);
 
-import App from "./App";
 
 const root = createRoot(rootElement);
 root.render(
-	<StrictMode>
-		<App />
-	</StrictMode>
+	< Provider store={Store}>
+		< App />
+	</ Provider>
 );

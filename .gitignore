@@ -4,6 +4,8 @@
 # Frontend Build Files
 node_modules
 src/*.js
+src/components
+src/reducers
 fastinni/pages
 
 # Python files
