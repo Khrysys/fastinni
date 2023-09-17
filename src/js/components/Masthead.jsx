@@ -3,7 +3,7 @@ import "../css/masthead.css"
 import { ImageContainer } from "./ImageContainer";
 
 export function Masthead() {
-	return <div class="masthead">
-		<ImageContainer image={"./img/Flaskinni.png"} alt={"Masthead Image"} />
+	return <div className="masthead">
+		<ImageContainer image={require("../img/Flaskinni.png")} alt={"Masthead Image"} />
 	</div>;
 }

@@ -1,7 +1,9 @@
+import "../css/footer.css";
+
 export function Footer() {
 	return <>
 		<div className="copyright">
-			© 2022 Copyright:<a href="">KhrySystem Computing</a>
+			<p>© 2022 Copyright: KhrySystem Computing</p>
 		</div>
 	</>
 }

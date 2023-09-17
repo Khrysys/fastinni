@@ -4,3 +4,7 @@
     width: 100%;
     height: fit-content;
 }
+
+.masthead img {
+    width: 100%;
+}

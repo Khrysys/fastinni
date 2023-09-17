@@ -1,8 +1,8 @@
+import "./css/fonts.css";
 import { createRoot } from "react-dom/client";
-import { Provider } from "react-redux";
-import "./css/styles.css";
+import "./css/main.css";
 import App from "./components/App";
-import { Store } from "./Store";
+import { StrictMode } from "react";
 
 const rootElement = document.createElement("div");
 document.body.appendChild(rootElement);
@@ -10,7 +10,7 @@ document.body.appendChild(rootElement);
 
 const root = createRoot(rootElement);
 root.render(
-	< Provider store={Store}>
+	< StrictMode >
 		< App />
-	</ Provider>
+	</ StrictMode >
 );

@@ -1,5 +1,5 @@
 import { ajax } from "jquery";
-import { setState, Component} from 'react';
+import { Component} from 'react';
 
 import { Header } from "./Header";
 import { Loading } from "./Loading";
@@ -7,17 +7,21 @@ import { Masthead } from "./Masthead";
 import { Footer } from "./Footer";
 
 export default class App extends Component {
+
 	constructor(props) {
 		super(props);
 		this.state = {
-			loading: true
+			loading: true,
+			server_build: "",
+			mode: 'light'
 		};
 	}
 
 	componentDidMount() {
-		ajax( "../api/latest" ).done(function() {
+		console.log(this.state)
+		ajax( "../api/latest" ).done(function(data) {
 			//alert( ".done() ran" );
-			this.setState({'loading': false})
+			this.setState({loading: false, server_build: data[Object.keys(data)[0]]})
 		}.bind(this)).fail(function() {
 			alert( ".fail() ran" );
 		}).always(function() {
@@ -26,19 +30,20 @@ export default class App extends Component {
 		
 	}
 
+	toggleMode() {
+		this.setState({mode: this.state.mode == "light" ? "dark" : "light"})
+	}
+
 	render() {
 		if(this.state.loading) {
-			return <>
-				< Header />
-				< Loading />
-				< Footer />
-			</>
+			return < Loading />
 		}
 
-		return <>
-			< Header />
+		return <div className={this.state.mode + '-mode'}>
+			< Header isLight={this.state.mode == "light" ? true : false} changeMode={() => this.toggleMode().bind(this)}/>
 			< Masthead />
+
 			< Footer />
-		</>
+		</div>
 	}
 }
