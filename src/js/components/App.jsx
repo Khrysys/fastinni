@@ -1,49 +1,36 @@
-import { ajax } from "jquery";
-import { Component} from 'react';
+import { ajax } from "jquery"
+import { useContext, useEffect, useState } from 'react'
 
-import { Header } from "./Header";
-import { Loading } from "./Loading";
-import { Masthead } from "./Masthead";
-import { Footer } from "./Footer";
+import { Header } from './Header'
+import { Loading } from "./Loading"
+import { Masthead } from "./Masthead"
+import { Footer } from "./Footer"
+import { ThemeProvider } from "../contexts/ThemeContext"
 
-export default class App extends Component {
+import "../css/loading.css"
+import { Container } from "./Container"
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			loading: true,
-			server_build: "",
-			mode: 'light'
-		};
-	}
+export default function App() {
+	const [ error, setError ] = useState("")
+	const [ isLoaded, setIsLoaded ] = useState(false)
+	const [ serverBuild, setServerBuild ] = useState("")
 
-	componentDidMount() {
-		console.log(this.state)
-		ajax( "../api/latest" ).done(function(data) {
-			//alert( ".done() ran" );
-			this.setState({loading: false, server_build: data[Object.keys(data)[0]]})
-		}.bind(this)).fail(function() {
-			alert( ".fail() ran" );
-		}).always(function() {
-			//alert(".always() ran");
-		});
-		
-	}
+	useEffect(() =>{
+		ajax(process.env.NPM_API_URL).done(function(data) {
+			setIsLoaded(true)
+			setServerBuild(data[Object.keys(data)[0]])
+		}).fail(function() {
+			setError(process.env.NPM_API_URL + " failed")
+		})
+	})
 
-	toggleMode() {
-		this.setState({mode: this.state.mode == "light" ? "dark" : "light"})
-	}
-
-	render() {
-		if(this.state.loading) {
-			return < Loading />
-		}
-
-		return <div className={this.state.mode + '-mode'}>
-			< Header isLight={this.state.mode == "light" ? true : false} changeMode={() => this.toggleMode().bind(this)}/>
-			< Masthead />
-
-			< Footer />
+	if(!isLoaded) {
+		return <div className="loading">
+			< Loading />
 		</div>
 	}
+
+	return < ThemeProvider >
+		<Container />
+	</ ThemeProvider >
 }

@@ -5,7 +5,7 @@
 node_modules
 src/*.js
 src/components
-src/reducers
+src/contexts
 fastinni/pages
 
 # Python files

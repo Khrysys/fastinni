@@ -1,38 +1,33 @@
 import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { ThemeContext, ThemeDispachContext } from '../contexts/ThemeContext';
+import { setCookie } from '../cookies';
+import "../css/header.css"
+import { LoginShowingContext } from '../contexts/HeaderContext';
 
-import "../css/header.css";
-
-export function Header(props) {
-    const [isResponsive, setIsResponsive] = useState(false);
-    var classes = "topnav";
-    if(isResponsive) {
+export function Header() {
+    const theme = useContext(ThemeContext)
+    const setTheme = useContext(ThemeDispachContext)
+    const [isResponsive, setIsResponsive] = useState(false)
+    const toggleLoginShowing = useContext(LoginShowingContext)
+    var classes = "topnav-" + theme;
+    if (isResponsive) {
         classes += " responsive";
     }
 
-    if(props.isLight) {
-        return <div className={classes} id="myTopnav">
-        <a href="#home" className="active">Home</a>
-        <a href="#news">News</a>
-        <a href="#contact">Contact</a>
-        <a href="#about">About</a>
-        < FontAwesomeIcon icon={icon({name:"sun"})} onClick={props.changeMode() } />
-        <a className="icon" onClick={ setIsResponsive(!isResponsive) }>
-            < FontAwesomeIcon icon={icon({name:"bars"})}/>
-        </a>
-    </div>
-    }
+    var isLight = theme == 'light'
 
-    return <div className={classes} id="myTopnav">
+    return <div className={classes}>
         <a href="#home" className="active">Home</a>
         <a href="#news">News</a>
         <a href="#contact">Contact</a>
-        <a href="#about">About</a>
-        < FontAwesomeIcon icon={icon({name:"moon"})} onClick={props.changeMode() } />
-        <a className="icon" onClick={ setIsResponsive(!isResponsive) }>
-            < FontAwesomeIcon icon={icon({name:"bars"})}/>
+        <a onClick={() => {toggleLoginShowing()}}>Login</a>
+        <a className="theme-toggle" onClick={() => { setTheme(isLight ? "dark" : "light") }}>
+            <FontAwesomeIcon icon={isLight ? icon({ name: "moon" }) : icon({name: "sun"})} />
+        </a>
+        <a className="icon" onClick={() => setIsResponsive(!isResponsive)}>
+            <FontAwesomeIcon icon={icon({ name: "bars" })} />
         </a>
     </div>
-    
 }

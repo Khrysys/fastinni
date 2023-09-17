@@ -1,3 +1,13 @@
 body {
+  font-family: 'Titillium Web', latin;
+}
+
+.light-mode {
   background-color: #FFF;
+  color: #000;
+}
+
+.dark-mode {
+	color: #FFF;
+  background-color: #23272F;
 }

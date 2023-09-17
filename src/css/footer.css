@@ -1,14 +1,24 @@
 .copyright {
     justify-content: center;
-    font-size: 14px;
+    font-size: 24px;
     color: #eee;
     text-align: center;
-    background-color: #444;
+    background-color: #010409;
     height: 300px;
     vertical-align: middle;
 }
 
 .copyright p {
     padding-top: 100px;
-    font-family: 'Titillium Web', latin;
+}
+
+@media screen and (max-width: 600px) {
+    .copyright {
+        font-size: 12px;
+        height: 150px;
+    }
+
+    .copyright p {
+        padding-top: 50px;
+    }
 }

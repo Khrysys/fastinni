@@ -1,0 +1,32 @@
+.login-container {
+    width: 400px;
+    height: 600px;
+    margin: 8px auto;
+    opacity: 0.8;
+    background: #000;
+    justify-content: center;
+}
+
+.center-div header a {
+	font-size: 30px;
+	display: block;
+	text-align: center;
+}
+
+.center-div header {
+	padding-top: 20px;
+}
+
+
+@media screen and (max-width: 600px) {
+    .center-div {
+        width: 100%;
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+
+    form {
+        margin-left: 0px;
+        margin-right: 0px;
+    }
+}

@@ -1,6 +1,7 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const DotenvWebpackPlugin = require('dotenv-webpack');
 
 module.exports = {
     entry: './src/index.js',
@@ -13,6 +14,10 @@ module.exports = {
             patterns: [
                 {'from': './src/copy', 'to': './'}
             ]
+        }),
+        new DotenvWebpackPlugin({
+            path: "./.env",
+            safe: false
         })
     ],
     output: {
