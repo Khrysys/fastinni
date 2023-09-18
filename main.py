@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 async def run():
-    app = create_app()
+    app = await create_app()
     # SSL Configuration if it exists
     if path.exists('./key.pem'):
         ssl_key = './key.pem'

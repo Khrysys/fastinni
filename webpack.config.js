@@ -39,5 +39,10 @@ module.exports = {
                 type: 'asset/resource',
             },
         ]
+    },
+    optimization: {
+        splitChunks: {
+            chunks: 'all'
+        }
     }
 };

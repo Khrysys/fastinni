@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./css/main.css";
 import App from "./components/App";
 import { StrictMode } from "react";
+import { ErrorProvider } from "./contexts/ErrorContext";
 
 const rootElement = document.createElement("div");
 document.body.appendChild(rootElement);
@@ -11,6 +12,8 @@ document.body.appendChild(rootElement);
 const root = createRoot(rootElement);
 root.render(
 	< StrictMode >
-		< App />
+		< ErrorProvider>
+			< App />
+		</ErrorProvider>
 	</ StrictMode >
 );

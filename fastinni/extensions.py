@@ -11,7 +11,8 @@ def get_csrf_config():
     return [
         ("secret_key", getenv('FASTAPI_CSRF_TOKEN', str(urandom(128).hex()))),
         ("cookie_samesite", 'none'),
-        ("cookie_secure", True)
+        ("cookie_secure", True),
+        ("cookie_httponly", False)
     ]
 
 csrf = CsrfProtect()

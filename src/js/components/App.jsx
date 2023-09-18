@@ -9,9 +9,12 @@ import { ThemeProvider } from "../contexts/ThemeContext"
 
 import "../css/loading.css"
 import { Container } from "./Container"
+import { ErrorContext, ErrorDispachContext } from "../contexts/ErrorContext"
+import { AccountProvider } from "../contexts/AccountContext"
 
 export default function App() {
-	const [ error, setError ] = useState("")
+	const error = useContext(ErrorContext)
+	const setError = useContext(ErrorDispachContext)
 	const [ isLoaded, setIsLoaded ] = useState(false)
 	const [ serverBuild, setServerBuild ] = useState("")
 
@@ -26,11 +29,14 @@ export default function App() {
 
 	if(!isLoaded) {
 		return <div className="loading">
+			<p className="error">{error}</p>
 			< Loading />
 		</div>
 	}
 
 	return < ThemeProvider >
-		<Container />
+		<AccountProvider >
+			< Container />
+		</AccountProvider>
 	</ ThemeProvider >
 }

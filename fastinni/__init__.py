@@ -3,14 +3,26 @@ from uvicorn import Config, Server
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.routing import APIRouter
+
 async def index():
     return {}
 
 from .extensions import *
 
-def create_app():
+async def create_app():
     app = FastAPI(debug=True, title="Fastinni")
+    
+    from .db import db, Base
+    
+    # ---------------------------
+    # | DATABASE INITIALIZATION |
+    # ---------------------------
+    async with db.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+    async with db.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
+    
     # -----------------------
     # | FASTAPI MIDDLEWARES |
     # -----------------------

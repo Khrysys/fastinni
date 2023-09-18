@@ -1,6 +1,6 @@
 import "../css/masthead.css"
 
-import { ImageContainer } from "./ImageContainer";
+import { ImageContainer } from "./blocks/ImageContainer";
 
 export function Masthead() {
 	return <div className="masthead">
