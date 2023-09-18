@@ -7,6 +7,7 @@ This app is intended to be a FastAPI / React Single-Page web app starting point,
 - npm
 - python3.11
 - poetry
+- A handy .env file
 
 That's it! simply install the poetry dependencies and Fastinni takes care of the rest, the babel translation, webpack, tying things up into a single neat directory. 
 
@@ -32,4 +33,19 @@ pip3 install --upgrade poetry
 python3 -m poetry shell
 poetry install
 poetry run main.py
+```
+
+## Sample `.env` File
+
+```env
+# -----------------------
+# | NODE.JS ENVIRONMENT |
+# -----------------------
+NPM_API_URL=http://127.0.0.1:5000/api/latest # Used to provide easy splitting up of the API server and the HTML server
+
+# ------------------------
+# | FASTINNI ENVIRONMENT |
+# ------------------------
+FASTINNI_DB_URL=postgresql+asyncpg://postgres:postgres@localhost/db-fastinni 
+
 ```
