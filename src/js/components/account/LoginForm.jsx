@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Form } from "../blocks/Form"
 import { ajax } from "jquery"
 import { setCookie } from "../../cookies"
+import { ThirdPartyLogin } from "./ThirdPartyLogin"
 
 export function LoginForm() {
     const [tag, setTag] = useState("")
@@ -11,9 +12,11 @@ export function LoginForm() {
     function onSubmit() {
         ajax(
             process.env.NPM_API_URL + "account/login", 
-            data={
-                'tag': tag,
-                'password': password,
+            {
+                data: {
+                    'tag': tag,
+                    'password': password,
+                }
             }
         ).done(function(data) {
             console.log(data)
@@ -37,6 +40,7 @@ export function LoginForm() {
             <input type="checkbox" id="remember" defaultChecked={remember} onChange={() => setRemember(!remember)}/>
             <label htmlFor="remember">Remember Me</label>
             <input type="submit" name="Login"/>
+            < ThirdPartyLogin />
         </Form>
     </div>
 }

@@ -9,19 +9,10 @@ load_dotenv()
 
 async def run():
     app = await create_app()
-    # SSL Configuration if it exists
-    if path.exists('./key.pem'):
-        ssl_key = './key.pem'
-    else:
-        ssl_key = None
-    if path.exists('./cert.pem'):
-        ssl_cert = './cert.pem'
-    else:
-        ssl_cert = None
     
-    config = Config(app, host=getenv('HOST', '127.0.0.1'), port=int(getenv('PORT', '5000')), 
-                    log_level="info", uds=getenv('UNIX_SOCKET', None), reload=True,
-                    ssl_keyfile=ssl_key, ssl_certfile=ssl_cert
+    config = Config(app, host=getenv('FASTINNI_HOST', '127.0.0.1'), port=int(getenv('FASTINNI_PORT', '5000')), 
+                    log_level="info", uds=getenv('FASTINNI_UNIX_SOCKET', None), reload=True,
+                    ssl_keyfile=getenv("FASTINNI_SSL_KEYFILE"), ssl_certfile=getenv("FASTINNI_SSL_CERTFILE")
                 )
     server = Server(config)
     await server.serve()

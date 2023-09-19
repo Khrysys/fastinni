@@ -1,10 +1,8 @@
-import { icon } from '@fortawesome/fontawesome-svg-core/import.macro';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState, useContext } from "react";
 import { ThemeContext, ThemeDispachContext } from '../contexts/ThemeContext';
-import { setCookie } from '../cookies';
 import "../css/header.css"
 import { BlogPostsShowingContext, ContactFormShowingContext, LoginShowingContext } from '../contexts/HeaderContext';
+import { FaBars, FaMoon, FaSun } from 'react-icons/fa6';
 
 export function Header() {
     const [isResponsive, setIsResponsive] = useState(false)
@@ -27,10 +25,10 @@ export function Header() {
         <a onClick={() => toggleContactShowing()}>Contact</a>
         <a onClick={() => toggleLoginShowing()}>Login</a>
         <a className="theme-toggle" onClick={() => { setTheme(isLight ? "dark" : "light") }}>
-            <FontAwesomeIcon icon={isLight ? icon({ name: "moon" }) : icon({name: "sun"})} />
+            { isLight ? < FaMoon /> : <FaSun />}
         </a>
         <a className="icon" onClick={() => setIsResponsive(!isResponsive)}>
-            <FontAwesomeIcon icon={icon({ name: "bars" })} />
+            < FaBars />
         </a>
     </div>
 }

@@ -12,10 +12,6 @@
 .login-container form {
 	display: inline-block;
     width: 100%;
-    height: 160px;
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-block-end: 0px;
 }
 
 .login-container input[type=text], 
@@ -74,6 +70,11 @@
     margin-bottom: 277px;
     background-color: transparent;
     color: #FFF;
+}
+
+.login-container .third-party .icons {
+    display: flex;
+    justify-content: space-around;
 }
 
 @media screen and (max-width: 600px) {

@@ -16,3 +16,7 @@ fastinni/pages
 
 # MacOS files
 *.DS_Store
+
+# Certificate files for OAuth development testing
+private.key
+selfsigned.crt

@@ -12,7 +12,7 @@ export function Container() {
     const theme = useContext(ThemeContext)
     const [isLoginShowing, setIsLoginShowing] = useState(false);
     const [isContactShowing, setIsContactShowing] = useState(false);
-    const [isBlogShowing, setIsBlogShowing] = useState(false);
+    const [isBlogShowing, setIsBlogShowing] = useState(true);
 
     function toggleLoginShowing() {
         setIsLoginShowing(!isLoginShowing);

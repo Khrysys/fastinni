@@ -9,6 +9,6 @@ export function LoginContainer() {
 
     return <div className="login-container">
         {isNewAccount ? < SignupForm /> : < LoginForm />}
-        <button className="signup-toggle" onClick={() => setIsNewAccount(!isNewAccount)}>Don't have an account?</button>
+        <button className="signup-toggle" onClick={() => setIsNewAccount(!isNewAccount)}>{isNewAccount ? "Already have an account?" : "Don't have an account?"}</button>
     </div>
 }

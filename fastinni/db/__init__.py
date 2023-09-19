@@ -8,6 +8,6 @@ from sqlalchemy import Column, Integer
 class Base(AsyncAttrs, DeclarativeBase):
     id = Column("id", Integer, primary_key=True, nullable=False, unique=True)
 
-db = create_async_engine(getenv("FASTAPI_DB_URL")) # type: ignore
+db = create_async_engine(getenv("FASTINNI_DB_URL")) # type: ignore
 sessionmaker = async_sessionmaker(db)
 

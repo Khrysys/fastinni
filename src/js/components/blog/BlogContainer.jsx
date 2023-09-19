@@ -1,3 +1,5 @@
 export function BlogContainer() {
-    return <div className="blog-container"></div>
+    return <div className="blog-container">
+        
+    </div>
 }

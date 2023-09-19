@@ -1,10 +1,7 @@
 import { ajax } from "jquery"
 import { useContext, useEffect, useState } from 'react'
 
-import { Header } from './Header'
 import { Loading } from "./Loading"
-import { Masthead } from "./Masthead"
-import { Footer } from "./Footer"
 import { ThemeProvider } from "../contexts/ThemeContext"
 
 import "../css/loading.css"
@@ -29,12 +26,13 @@ export default function App() {
 
 	if(!isLoaded) {
 		return <div className="loading">
-			<p className="error">{error}</p>
+			{error != "" && <p className="error">{error}</p>}
 			< Loading />
 		</div>
 	}
 
 	return < ThemeProvider >
+		{error != "" && <p className="error">{error}</p>}
 		<AccountProvider >
 			< Container />
 		</AccountProvider>
