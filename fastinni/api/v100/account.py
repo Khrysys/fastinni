@@ -4,10 +4,9 @@ from fastapi.responses import JSONResponse
 from sqlalchemy import select
 from sqlalchemy.orm import query
 
-from .routers import dev 
-from ..db import sessionmaker
-from ..db.user import User
-from ..security import check_password_hash
+from ...db import sessionmaker
+from ...db.user import User
+from ...security import check_password_hash
 from sqlalchemy import Result
 from os import getenv
 from jwt import encode
@@ -51,3 +50,11 @@ async def signup(request: Request):
         except:
             return JSONResponse({'detail': 'data_invalid'}, status_code=400)
         
+@account.get('/username-available/{username}')
+async def get_username_availibility(request: Request, username: str):
+    async with sessionmaker.begin() as session:
+        try: 
+            users = await session.execute(select(User).where(User.username == username))
+        except:
+            return JSONResponse({'availibility': 'AVAILABLE'}, status_code=200)
+        return JSONResponse({'availibility': 'TAKEN'}, status_code=200)

@@ -18,10 +18,7 @@ async def create_app():
     # | DATABASE INITIALIZATION |
     # ---------------------------
     async with db.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
-    async with db.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
-
     
     # -----------------------
     # | FASTAPI MIDDLEWARES |
@@ -38,6 +35,6 @@ async def create_app():
     # ----------------
     app.mount(path='/pages', app=StaticFiles(directory='fastinni/pages', html=True), name='Pages') # type: ignore
     
-    from . import api
-    app.include_router(api.api) # type: ignore
+    from .api import api
+    app.include_router(api) # type: ignore
     return app

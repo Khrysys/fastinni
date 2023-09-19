@@ -1,10 +1,8 @@
-from datetime import datetime
-
 from fastapi.routing import APIRouter
 
-build_time = str(datetime.now())
-latest = APIRouter(prefix="/latest")
-@latest.get("/")
-def index():
-    return {"Server Build": build_time}
-dev = APIRouter(prefix="/dev")
+from .v100 import v100
+
+latest = APIRouter(prefix="/latest", tags=['Latest'])
+dev = APIRouter(prefix="/dev", tags=["In Development"])
+
+latest.include_router(v100)

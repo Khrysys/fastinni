@@ -20,3 +20,7 @@ fastinni/pages
 # Certificate files for OAuth development testing
 private.key
 selfsigned.crt
+
+# Alembic migration
+alembic.ini
+migrations
