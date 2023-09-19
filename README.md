@@ -41,11 +41,16 @@ poetry run main.py
 # -----------------------
 # | NODE.JS ENVIRONMENT |
 # -----------------------
-NPM_API_URL=http://127.0.0.1:5000/api/latest # Used to provide easy splitting up of the API server and the HTML server
+NPM_API_URL=https://127.0.0.1:5000/api/latest/
+# Used to provide easy splitting up of the API server and the HTML server
 
-# ------------------------
-# | FASTINNI ENVIRONMENT |
-# ------------------------
+# --------------------------------
+# | FASTINNI HOSTING ENVIRONMENT |
+# --------------------------------
+FASTINNI_HOST=127.0.0.1
+FASTINNI_PORT=5000
 FASTINNI_DB_URL=postgresql+asyncpg://postgres:postgres@localhost/db-fastinni 
-
+# FASTINNI_UNIX_SOCKET=/run/ #
+FASTINNI_SSL_KEYFILE=private.key
+FASTINNI_SSL_CERTFILE=selfsigned.crt
 ```
