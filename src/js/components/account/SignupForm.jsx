@@ -14,7 +14,7 @@ export function SignupForm() {
     }
 
     function checkUsernameAvailibility() {
-        ajax(process.env.NPM_API_URL + 'account/username-available/' + username).done(function(data) {
+        ajax(process.env.NPM_API_URL + 'account/username-available/' + username + '/').done(function(data) {
             setUsernameMessage(data.responseJSON().availibilityMessage)
         }).fail(function(error) {
             setError(error.responseJSON().detail)

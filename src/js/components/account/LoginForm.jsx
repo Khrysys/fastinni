@@ -11,7 +11,7 @@ export function LoginForm() {
 
     function onSubmit() {
         ajax(
-            process.env.NPM_API_URL + "account/login", 
+            process.env.NPM_API_URL + "account/login/", 
             {
                 data: {
                     'tag': tag,
