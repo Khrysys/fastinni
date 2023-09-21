@@ -4,7 +4,9 @@
 from os import getenv, urandom
 
 '''SQL Database URL (default: postgresql+asyncpg://postgres:postgres@localhost/db-fastinni)'''
-FASTINNI_DB_URL = getenv("FASTINNI_DB_URL", "postgresql+asyncpg://postgres:postgres@localhost/db-fastinni")
+FASTINNI_DB_URL = getenv("FASTINNI_DB_URL", "postgresql://postgres:postgres@localhost/db-fastinni")
+
+FASTINNI_SESSION_SECRET_KEY = getenv('FASTINNI_SESSION_SECRET_KEY', urandom(128).hex())
 
 FASTINNI_CSRF_TOKEN = getenv('FASTAPI_CSRF_TOKEN', str(urandom(128).hex()))
 FASTINNI_CSRF_COOKIE_SAMESITE = getenv('FASTINNI_CSRF_COOKIE_SAMESITE', 'none')

@@ -1,15 +1,11 @@
 from fastapi.routing import APIRouter
 from fastapi.requests import Request
 from fastapi.responses import JSONResponse
-from sqlalchemy import select
-from sqlalchemy.orm import query
 
-from ...db import sessionmaker
-from ...db.user import User
 from ...security import check_password_hash
-from sqlalchemy import Result
 from os import getenv
 from jwt import encode
+from ..db.user import User
 
 FASTINNI_LOGIN_SECRET = getenv("FASTINNI_LOGIN_SECRET")
 

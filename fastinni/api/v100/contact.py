@@ -21,5 +21,6 @@ async def post_contact(request: Request, csrf: CsrfProtect = Depends()):
             body="Additional Data: \n" + dumps(data, indent=4),
             subtype=MessageType.plain
         )
+        await mail.send_message(message)
     except:
         return JSONResponse({"detail": "Bad Request"}, status_code=400)
