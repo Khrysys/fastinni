@@ -6,7 +6,7 @@ from os import getenv, urandom
 '''SQL Database URL (default: postgresql+asyncpg://postgres:postgres@localhost/db-fastinni)'''
 FASTINNI_DB_URL = getenv("FASTINNI_DB_URL", "postgresql://postgres:postgres@localhost/db-fastinni")
 
-FASTINNI_SESSION_SECRET_KEY = getenv('FASTINNI_SESSION_SECRET_KEY', urandom(128).hex())
+FASTINNI_SESSION_SECRET_KEY = getenv('FASTINNI_SESSION_SECRET_KEY', 'secret')
 
 FASTINNI_CSRF_TOKEN = getenv('FASTAPI_CSRF_TOKEN', str(urandom(128).hex()))
 FASTINNI_CSRF_COOKIE_SAMESITE = getenv('FASTINNI_CSRF_COOKIE_SAMESITE', 'none')
@@ -21,3 +21,6 @@ FASTINNI_MAIL_STARTTLS = getenv("FASTINNI_MAIL_STARTTLS", False)
 FASTINNI_MAIL_SSL_TLS = getenv("FASTINNI_MAIL_SSL_TLS", True)
 FASTINNI_MAIL_DEBUG = getenv("FASTINNI_MAIL_DEBUG", 0)
 FASTINNI_MAIL_FROM = getenv("FASTINNI_MAIL_FROM", "fastinni@gmail.com")
+
+GOOGLE_OAUTH_CLIENT_ID = getenv("GOOGLE_OAUTH_CLIENT_ID")
+GOOGLE_OAUTH_CLIENT_SECRET = getenv("GOOGLE_OAUTH_CLIENT_SECRET")

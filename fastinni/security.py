@@ -6,12 +6,20 @@ import os
 import posixpath
 import secrets
 
+from jwt import encode
+
+from .api.db.user import User
+from .settings import FASTINNI_SESSION_SECRET_KEY
+
 SALT_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 DEFAULT_PBKDF2_ITERATIONS = 600000
 
 _os_alt_seps: list[str] = list(
     sep for sep in [os.sep, os.path.altsep] if sep is not None and sep != "/"
 )
+
+def create_login_jwt(user: User) -> str:
+    return encode({'tag': user.tag, 'username': user.name, 'id': user.id}, sort_headers=True, key=FASTINNI_SESSION_SECRET_KEY)
 
 
 def gen_salt(length: int) -> str:
