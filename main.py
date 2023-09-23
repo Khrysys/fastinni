@@ -24,7 +24,7 @@ async def run():
     await server.serve()
 
 if __name__ == '__main__':
-    code = system(f'npm run build && npm run pack')
+    code = system(f'npm install && npm run build && npm run pack')
     if code != 0:
         exit(code)
         

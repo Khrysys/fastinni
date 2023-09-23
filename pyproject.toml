@@ -6,7 +6,7 @@ authors = ["Michael Piccirillo <70709374+Khrysys@users.noreply.github.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.10"
 fastapi = "^0.95.1"
 python-dotenv = "^1.0.0"
 uvicorn = {extras = ["all"], version = "^0.23.2"}
