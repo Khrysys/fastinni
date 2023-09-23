@@ -1,13 +1,10 @@
 import { ajax } from "jquery"
 import { useContext, useEffect, useState } from 'react'
-
-import { Loading } from "./Loading"
+import { ErrorContext, ErrorDispachContext } from "../contexts/ErrorContext"
 import { ThemeProvider } from "../contexts/ThemeContext"
-
 import "../css/loading.css"
 import { Container } from "./Container"
-import { ErrorContext, ErrorDispachContext } from "../contexts/ErrorContext"
-import { AccountProvider } from "../contexts/AccountContext"
+import { Loading } from "./Loading"
 
 export default function App() {
 	const error = useContext(ErrorContext)
@@ -15,14 +12,12 @@ export default function App() {
 	const [ isLoaded, setIsLoaded ] = useState(false)
 	const [ serverBuild, setServerBuild ] = useState("")
 
-	useEffect(() =>{
-		ajax(process.env.NPM_API_URL).done(function(data) {
+	useEffect(() => {
+		ajax(process.env.NPM_API_URL + 'csrf/').done(function() { 
 			setIsLoaded(true)
-			setServerBuild(data[Object.keys(data)[0]])
-		}).fail(function() {
-			setError(process.env.NPM_API_URL + " failed")
 		})
 	})
+	
 
 	if(!isLoaded) {
 		return <div className="loading">
@@ -33,8 +28,6 @@ export default function App() {
 
 	return < ThemeProvider >
 		{error != "" && <p className="error">{error}</p>}
-		<AccountProvider >
-			< Container />
-		</AccountProvider>
+		<Container/>
 	</ ThemeProvider >
 }

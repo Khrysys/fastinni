@@ -49,6 +49,13 @@
 	float: right;
 }
 
+.topnav-dark a.profile, 
+.topnav-light a.profile {
+	float: right;
+	display: flex;
+    overflow: visible;
+}
+
 /* Hide the link that should open and close the topnav on small screens */
 .topnav-dark .icon,
 .topnav-light .icon {

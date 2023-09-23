@@ -28,7 +28,6 @@ class User(SQLModel, table=True):
 
 from . import engine
 
-
 def add_user_if_not_found(tag: str) -> User:
     try:
         with Session(engine) as session:

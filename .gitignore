@@ -13,6 +13,7 @@ fastinni/pages
 
 # VSCode Files
 .vscode
+jsconfig.json
 
 # MacOS files
 *.DS_Store

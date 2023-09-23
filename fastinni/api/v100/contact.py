@@ -1,6 +1,5 @@
 from fastapi.routing import APIRouter
 from fastapi.responses import JSONResponse
-from fastapi_csrf_protect import CsrfProtect
 from fastapi.requests import Request
 from json import dumps
 from fastapi import Depends
@@ -11,7 +10,7 @@ from ...extensions import mail
 contact = APIRouter(prefix="/contact")
 
 @contact.post('/')
-async def post_contact(request: Request, csrf: CsrfProtect = Depends()):
+async def post_contact(request: Request):
     try:
         data = await request.json()
         

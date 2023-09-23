@@ -55,7 +55,7 @@ async def callback(request: Request, code: str):
                 session.add(user)
                 session.commit()
             response = RedirectResponse(str(request.base_url))
-            response.set_cookie("x-fastinni-login-jwt", create_login_jwt(user))
+            response.set_cookie("x-fastinni-login-jwt", create_login_jwt(user), httponly=True, secure=True)
             return response
             
     else:

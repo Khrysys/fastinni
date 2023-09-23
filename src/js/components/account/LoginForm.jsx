@@ -13,6 +13,7 @@ export function LoginForm() {
         ajax(
             process.env.NPM_API_URL + "account/login/", 
             {
+                method: "POST",
                 data: {
                     'tag': tag,
                     'password': password,

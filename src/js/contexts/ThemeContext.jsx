@@ -1,7 +1,7 @@
-import { createContext, useCallback, useState } from "react";
+import { createContext, useState } from "react";
 
-export const ThemeContext = createContext(null);
-export const ThemeDispachContext = createContext(null);
+export const ThemeContext = createContext()
+export const ThemeDispachContext = createContext()
 
 export function ThemeProvider(props) {
     const [ theme, setTheme ] = useState("dark")
