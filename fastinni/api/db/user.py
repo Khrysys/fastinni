@@ -3,7 +3,8 @@ from typing import List, Optional
 
 from sqlmodel import Field, Relationship, Session, SQLModel, select, UniqueConstraint
 from .roles_users import RolesUsers
-from .roles import Role
+from .role import Role
+from .friends_list import FriendsList
 
 class User(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, unique=True)
@@ -12,8 +13,11 @@ class User(SQLModel, table=True):
     tag: str = Field(unique=True)
 
     phone: Optional[str] = Field(unique=True)
+    public_phone: Optional[bool] = Field(default=True)
     email: Optional[str] = Field(unique=True)
+    public_email: Optional[bool] = Field(default=True)
     address: Optional[str]
+    public_address: Optional[bool] = Field(default=True)
     about: Optional[str]
     image: Optional[str]
     password_hash: Optional[str]
@@ -25,6 +29,25 @@ class User(SQLModel, table=True):
     last_seen: Optional[datetime]
 
     roles: List[Role] = Relationship(back_populates="users", link_model=RolesUsers)
+    friends: List["User"] = Relationship(back_populates="friends", link_model=FriendsList)
+
+    def get_profile(self):
+        if not self.public_profile:
+            return
+        return {
+            'id': self.id,
+            'name': self.name, 
+            'tag': self.tag,
+            'phone': self.phone if self.public_phone else None,
+            'email': self.email if self.public_email else None,
+            'address': self.address if self.public_address else None,
+            'about': self.about,
+            'image': self.image,
+            'active': self.active,
+            'confirmed_at': self.confirmed_at,
+            'last_seen': self.last_seen
+        }
+
 
 from . import engine
 

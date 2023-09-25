@@ -20,7 +20,7 @@ oauth = WebApplicationClient(GOOGLE_OAUTH_CLIENT_ID)
 oauth_cfg = get("https://accounts.google.com/.well-known/openid-configuration").json()
 
 @google.get('/')
-async def index(request: Request):
+def index(request: Request):
     redirect_uri = str(request.url) + "callback"
     authorization_endpoint = oauth_cfg['authorization_endpoint']
 
@@ -31,8 +31,8 @@ async def index(request: Request):
     )
     return RedirectResponse(request_uri, 308)
 
-@google.get('/callback')
-async def callback(request: Request, code: str):
+@google.get('/callback', include_in_schema=False)
+def callback(request: Request, code: str, scope: str, authuser: str, propmt: str, hd: str):
     token_endpoint = oauth_cfg['token_endpoint']
     token_url, headers, body = oauth.prepare_token_request(
         token_endpoint, 

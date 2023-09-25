@@ -7,7 +7,7 @@ from fastapi_mail import MessageSchema, MessageType
 
 from ...extensions import mail
 
-contact = APIRouter(prefix="/contact")
+contact = APIRouter(prefix="/contact", tags=['Contact'])
 
 @contact.post('/')
 async def post_contact(request: Request):

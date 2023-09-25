@@ -5,8 +5,9 @@ import { ajax } from "jquery";
 import { ErrorDispachContext } from "../../contexts/ErrorContext";
 
 export function SignupForm() {
-    const [username, setUsername] = useState("");
-    const [usernameMessage, setUsernameMessage] = useState("");
+    const [tag, setTag] = useState("");
+    const [tagMessage, setTagMessage] = useState("");
+    const [usenameMessageType, setUsernameMessageType] = useState("")
     const setError = useContext(ErrorDispachContext);
 
     function onSubmit() {
@@ -14,8 +15,9 @@ export function SignupForm() {
     }
 
     function checkUsernameAvailibility() {
-        ajax(process.env.NPM_API_URL + 'account/username-available/' + username + '/').done(function(data) {
-            setUsernameMessage(data.responseJSON().availibilityMessage)
+        ajax(process.env.NPM_API_URL + 'account/tag-available/' + tag + '/').done(function(data) {
+            setTagMessage(data.responseJSON().availibilityMessage)
+            setTagMessageType(data.responseJSON())
         }).fail(function(error) {
             setError(error.responseJSON().detail)
         })

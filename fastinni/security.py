@@ -9,7 +9,7 @@ import secrets
 from jwt import encode
 
 from .api.db.user import User
-from .settings import FASTINNI_SECRET_KEY, DEFAULT_PBKDF2_ITERATIONS
+from .settings import FASTINNI_LOGIN_TOKEN, DEFAULT_PBKDF2_ITERATIONS
 
 SALT_CHARS = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
@@ -18,7 +18,7 @@ _os_alt_seps: list[str] = list(
 )
 
 def create_login_jwt(user: User) -> str:
-    return encode({'tag': user.tag, 'username': user.name, 'id': user.id}, sort_headers=True, key=FASTINNI_SECRET_KEY)
+    return encode({'tag': user.tag, 'username': user.name, 'id': user.id}, sort_headers=True, key=FASTINNI_LOGIN_TOKEN)
 
 
 def gen_salt(length: int) -> str:

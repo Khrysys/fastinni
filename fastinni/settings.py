@@ -10,8 +10,8 @@ FASTINNI_SECRET_KEY = getenv('FASTINNI_SECRET_KEY', 'secret')
 '''SQL Database URL (default: postgresql+asyncpg://postgres:postgres@localhost/db-fastinni)'''
 FASTINNI_DB_URL = getenv("FASTINNI_DB_URL", "postgresql://postgres:postgres@localhost/db-fastinni")
 
-FASTAPI_LOGIN_TOKEN = getenv('FASTAPI_LOGIN_TOKEN', 'secret')
-FASTAPI_LOGIN_COOKIE_SAMESITE = getenv("FASTAPI_LOGIN_COOKIE_SAMESITE", 'none')
+FASTINNI_LOGIN_TOKEN = getenv('FASTAPI_LOGIN_TOKEN', 'secret')
+FASTINNI_LOGIN_COOKIE_SAMESITE = getenv("FASTAPI_LOGIN_COOKIE_SAMESITE", 'none')
 FASTINNI_LOGIN_COOKIE_SECURE = getenv("FASTINNI_LOGIN_COOKIE_SECURE", 'none')
 FASTINNI_LOGIN_COOKIE_HTTPONLY = getenv("FASTINNI_LOGIN_COOKIE_HTTPONLY", 'none')
 

@@ -3,7 +3,7 @@ import { ThemeContext, ThemeDispachContext } from '../contexts/ThemeContext';
 import "../css/header.css"
 import { BlogPostsShowingContext, ContactFormShowingContext, LoginShowingContext, ProfileShowingContext } from '../contexts/HeaderContext';
 import { FaBars, FaMoon, FaSun } from 'react-icons/fa6';
-import { ImageContext, LoginContext } from "../contexts/AccountContext";
+import { ImageContext, LoginContext, LoginDispatchContext } from "../contexts/AccountContext";
 
 export function Header() {
     const [isResponsive, setIsResponsive] = useState(false)
@@ -16,6 +16,7 @@ export function Header() {
     const toggleProfileShowing = useContext(ProfileShowingContext)
     const image = useContext(ImageContext)
     const login = useContext(LoginContext)
+    const setLogin = useContext(LoginDispatchContext)
 
     var classes = "topnav-" + theme;
     if (isResponsive) {
@@ -28,7 +29,10 @@ export function Header() {
         <a onClick={() => {}}></a>
         <a onClick={() => toggleBlogShowing()}>Blog</a>
         <a onClick={() => toggleContactShowing()}>Contact</a>
-        <a onClick={() => toggleLoginShowing()}>Login</a>
+        {login ? 
+            <a onClick={() => setLogin(false)}>Log Out</a> :
+            <a onClick={() => toggleLoginShowing()}>Login</a>
+        }
         <a className="theme-toggle" onClick={() => { setTheme(isLight ? "dark" : "light") }}>
             { isLight ? < FaMoon /> : <FaSun />}
         </a>
