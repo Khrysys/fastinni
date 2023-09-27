@@ -32,6 +32,12 @@ class PublicProfile(BaseModel):
     confirmed_at: Optional[datetime]
     last_seen: Optional[datetime]
 
+class GeneralInfo(BaseModel):
+    id: int
+    name: str
+    tag: str
+    image: str
+
 responses = {
     403: {
         'description': 'Invalid CSRF Token',
@@ -84,7 +90,8 @@ responses = {
                 }
             }
         }
-    }
+    },
+    response_model_include=None
 )
 def find_user_with_tag(tag: str, csrf_token: Annotated[str | None, Cookie()] = None, session: Annotated[str | None, Cookie()] = None):
     if not check_csrf_token(csrf_token, session):
@@ -99,7 +106,37 @@ def find_user_with_tag(tag: str, csrf_token: Annotated[str | None, Cookie()] = N
         except:
             raise HTTPException(404, detail=f"The User @{tag} was not found")
 
-@account.get('/user/{tag}/public')
+@account.get('/user/{tag}/public',
+    responses={
+        **responses,
+        404: {
+            'description': "User Not Found",
+            'model': DetailResponse,
+            'content': {
+                'application/json': {
+                    'example': {
+                        'detail': 'User "string" was not found'
+                    }
+                }
+            }
+        },
+        200: {
+            'description': 'Found User',
+            'model': GeneralInfo,
+            'content': {
+                'application/json': {
+                    'example': {
+                        'id': 0,
+                        'name': 'string',
+                        'tag': 'string',
+                        'image': 'string'
+                    }
+                }
+            }
+        }
+    },
+    response_model_include=None   
+)
 def get_general_user_info(tag: str, csrf_token: Annotated[str | None, Cookie()] = None, session: Annotated[str | None, Cookie()] = None):
     if not check_csrf_token(csrf_token, session):
         raise HTTPException(403, detail="Invalid CSRF Token")

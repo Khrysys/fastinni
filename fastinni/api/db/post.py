@@ -18,7 +18,7 @@ class Post(SQLModel, table=True):
     
     publish_date: Optional[datetime] = Field(default=datetime.utcnow)
 
-    tags: List[Tag] = Relationship(back_populates="users", link_model=TagsPosts)
+    tags: List[Tag] = Relationship(back_populates="posts", link_model=TagsPosts)
 
     @property
     def pubdate(self):

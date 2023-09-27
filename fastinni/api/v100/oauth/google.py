@@ -32,7 +32,7 @@ def index(request: Request):
     return RedirectResponse(request_uri, 308)
 
 @google.get('/callback', include_in_schema=False)
-def callback(request: Request, code: str, scope: str, authuser: str, propmt: str, hd: str):
+def callback(request: Request, code: str, scope: str, authuser: str, prompt: str, hd: str):
     token_endpoint = oauth_cfg['token_endpoint']
     token_url, headers, body = oauth.prepare_token_request(
         token_endpoint, 
