@@ -29,7 +29,10 @@ class User(SQLModel, table=True):
     last_seen: Optional[datetime]
 
     roles: List[Role] = Relationship(back_populates="users", link_model=RolesUsers)
-    friends: List["User"] = Relationship(back_populates="friends", link_model=FriendsList)
+    friends: List["User"] = Relationship(back_populates="friends", link_model=FriendsList, sa_relationship_kwargs={
+        "primaryjoin": "User.id == FriendsList.a_id",
+        "secondaryjoin": "User.id == FriendsList.b_id",
+    })
 
     def get_profile(self):
         if not self.public_profile:
