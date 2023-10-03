@@ -11,8 +11,9 @@ async def index():
 
 from .extensions import *
 
+api = FastAPI(debug=True, title="Fastinni API")
+
 def create_app():
-    api = FastAPI(debug=True, title="Fastinni API")
     app = FastAPI(debug=True, tile="Fastinni")
 
     # -----------------------
