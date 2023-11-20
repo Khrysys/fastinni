@@ -14,7 +14,7 @@ oauthlib = "^3.2.2"
 pyjwt = {extras = ["crypto"], version = "^2.8.0"}
 python-dotenv = "^1.0.0"
 requests = "^2.31.0"
-sqlmodel = "^0.0.8"
+sqlmodel = "^0.0.12"
 uvicorn = {extras = ["all"], version = "^0.23.2"}
 pydantic = "1.10.12"
 psycopg2-binary = "^2.9.8"
