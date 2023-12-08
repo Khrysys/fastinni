@@ -1,27 +1,16 @@
-# Environment
-.env
+# Environment files
+*.env
+deploy.sh
 
-# Frontend Build Files
-node_modules
-src/*.js
-src/components
-src/contexts
-fastinni/pages
+# Package directories
+node_modules/
+*.tgz
 
-# Python files
-*__pycache__
+# Build directories
+html/
+__pycache__/
+static/css/
 
-# VSCode Files
-.vscode
-jsconfig.json
-
-# MacOS files
-*.DS_Store
-
-# Certificate files for OAuth development testing
+# Development / temporary files
 private.key
 selfsigned.crt
-
-# Alembic migration
-alembic.ini
-migrations

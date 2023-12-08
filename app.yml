@@ -1,5 +1,0 @@
-runtime: python311
-
-instance_class: F2
-
-entrypoint: uvicorn --workers 4 --port 8080 main:app

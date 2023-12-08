@@ -1,0 +1,54 @@
+// Light Mode specific
+$light_primary_color: #FFF;
+$light_secondary_color: #002;
+$light_text_color: #000;
+
+// Dark Mode specific
+$dark_primary_color: #002;
+$dark_secondary_color: #000;
+$dark_text_color: #FFF;
+
+// General for every mode
+$accent_color: #D4AF37;
+$button_text_transform: none;
+$button_border_style: 2px solid;
+
+
+$themes: (
+    light: (
+        backgroundColor: $light_primary_color,
+        textColor: $light_text_color,
+        buttonTextColor: $light_text_color,
+        buttonTextTransform: $button_text_transform,
+        buttonTextHoverColor: $accent_color,
+        buttonColor: $light_primary_color,
+        buttonBorder: $button_border_style $light_primary_color,
+    ),
+    dark: (
+        backgroundColor: $dark_primary_color,
+        textColor: $dark_text_color,
+        buttonTextColor: $dark_text_color,
+        buttonTextTransform: $button_text_transform,
+        buttonTextHoverColor: $accent_color,
+        buttonColor: $dark_primary_color,
+        buttonBorder: $button_border_style $dark_primary_color,
+    ),
+);
+
+@mixin themify($themes) {
+    @each $theme, $map in $themes {
+        .theme-#{$theme} & {
+            $theme-map: () !global;
+            @each $key, $submap in $map {
+                $value: map-get(map-get($themes, $theme), '#{$key}');
+                $theme-map: map-merge($theme-map, ($key: $value)) !global;
+            }
+            @content;
+            $theme-map: null !global;
+        }
+    }
+}
+
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}

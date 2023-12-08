@@ -1,0 +1,22 @@
+{
+    "python.analysis.typeCheckingMode": "basic",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/__pycache__/": true,
+        "html/": true,
+        "node_modules/": true,
+        "private.key": true,
+        "selfsigned.crt": true,
+        "package-lock.json": true,
+        "poetry.lock": true,
+        "pyproject.toml": true,
+        "package.json": true,
+
+    },
+    "python.analysis.autoImportCompletions": true
+}
