@@ -22,12 +22,11 @@ class User(SQLModel, table=True): # type: ignore
     # Its alias is username so it should be identifiable from both columns
     tag: str = Field(alias="username", unique=True, )
     
-    
     # -----------------------------------------------------
     # --------- LEVEL TWO REQUIREMENTS
     # -----------------------------------------------------
-    # There are six fields at level 2 requirement, (highly recommended but not required).
-    # Each of these has a boolean toggle if it is publicly shown on your profile
+    # There are at level 2 requirement, (highly recommended but not required).
+    # Six of these has a boolean toggle if it is publicly shown on your profile (phone, email, address)
     # This toggle has no effect if the main public_profile is false.
     # You can use many different ways of storing a phone number, here a string is used to give the potential for
     # Extensions and other country codes.
@@ -46,12 +45,16 @@ class User(SQLModel, table=True): # type: ignore
     # We could simply throw a 400 and make the user restart since the hash would change, 
     # but that seems a bit excessive when scaling.
     password_hash: Optional[str] = Field(default=None)
+    # The profile image is exactly what it seems like. When this is None, it signals to load the default
+    # image from /api/img/default_profile.png
+    profile_image: Optional[str] = Field(default=None)
     
     # -----------------------------------------------------
     # --------- LEVEL THREE REQUIREMENTS
     # -----------------------------------------------------
     # Level three is effectively just for OAuth scopes (potentially useful but should have no detriment if not found)
     # These ensure that login is proper and not cracked.
+    google_id: Optional[int] = Field(default=None, unique=True)
     
     # -----------------------------------------------------
     # --------- LEVEL FOUR REQUIREMENTS

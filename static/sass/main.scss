@@ -1,3 +1,5 @@
+@import "fonts";
+
 // Light Mode specific
 $light_primary_color: #FFF;
 $light_secondary_color: #002;
@@ -8,11 +10,17 @@ $dark_primary_color: #002;
 $dark_secondary_color: #000;
 $dark_text_color: #FFF;
 
+// Midnight Mode specific
+$midnight_primary_color: #001;
+$midnight_secondary_color: #000;
+$midnight_text_color: #FFF;
+
 // General for every mode
 $accent_color: #D4AF37;
 $button_text_transform: none;
 $button_border_style: 2px solid;
 
+$theme-map: null;
 
 $themes: (
     light: (
@@ -33,9 +41,18 @@ $themes: (
         buttonColor: $dark_primary_color,
         buttonBorder: $button_border_style $dark_primary_color,
     ),
+    midnight: (
+        backgroundColor: $midnight_primary_color,
+        textColor: $midnight_text_color,
+        buttonTextColor: $midnight_text_color,
+        buttonTextTransform: $button_text_transform,
+        buttonTextHoverColor: $accent_color,
+        buttonColor: $midnight_primary_color,
+        buttonBorder: $button_border_style $midnight_primary_color,
+    )
 );
 
-@mixin themify($themes) {
+@mixin themify($themes: $themes ) {
     @each $theme, $map in $themes {
         .theme-#{$theme} & {
             $theme-map: () !global;
@@ -51,4 +68,12 @@ $themes: (
 
 @function themed($key) {
     @return map-get($theme-map, $key);
+}
+
+.root {
+    font-family: 'FA Solid';
+    @include themify {
+        background-color: themed("backgroundColor");
+        color: themed("textColor");
+    }
 }

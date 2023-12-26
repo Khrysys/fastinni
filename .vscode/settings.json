@@ -8,14 +8,14 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "**/__pycache__/": true,
-        "html/": true,
+        "html/": false,
         "node_modules/": true,
         "private.key": true,
         "selfsigned.crt": true,
         "package-lock.json": true,
         "poetry.lock": true,
-        "pyproject.toml": true,
-        "package.json": true,
+        "pyproject.toml": false,
+        "package.json": false,
 
     },
     "python.analysis.autoImportCompletions": true

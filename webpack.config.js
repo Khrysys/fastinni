@@ -6,20 +6,25 @@ const DotenvWebpackPlugin = require('dotenv-webpack');
 module.exports = {
     entry: './html/main.js',
     mode: 'development',
+    stats: {
+        errorDetails: true
+    },
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Fastinni', 
             favicon: "./static/favicon.ico"
         }),
-        new CopyWebpackPlugin({
-            patterns: [
-                {'from': './static/img', 'to': '../html/img'}
-            ]
-        }),
         new DotenvWebpackPlugin({
             path: "./.env",
             safe: false
-        })
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                {'from': './static/img', 'to': '../html/img'},
+                {'from': './static/webfonts', 'to': '../html/webfonts'},
+            ],
+            
+        }),
     ],
     output: {
       filename: 'js/[name].js',

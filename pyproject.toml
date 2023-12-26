@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "fastinni"
+version = "0.1.0"
+description = ""
+authors = ["MoonshotsLaptop <124398293+MoonshotsLaptop@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.104.1"
+uvicorn = "^0.24.0.post1"
+python-dotenv = "^1.0.0"
+sqlmodel = "^0.0.14"
+
+
+[tool.poetry.group.dev.dependencies]
+cryptography = "^41.0.7"
+datetime = "^5.3"
+requests = "^2.31.0"
+pyopenssl = "^23.3.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
