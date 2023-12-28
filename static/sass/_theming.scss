@@ -1,0 +1,94 @@
+// Light Mode specific
+$light_primary_color: #FFF;
+$light_secondary_color: #002;
+$light_text_color: #000;
+$light_header_border: #D0D7DE;
+
+// Dark Mode specific
+$dark_primary_color: #010409;
+$dark_secondary_color: #004;
+$dark_text_color: #FFF;
+$dark_header_border: #000;
+
+// Midnight Mode specific
+$midnight_primary_color: #001;
+$midnight_secondary_color: #000;
+$midnight_text_color: #FFF;
+$midnight_header_border: #000;
+
+// General for every mode
+$accent_color: #D4AF37;
+$button_text_transform: none;
+$button_border_style: 2px solid;
+$header_border_style: 1px solid;
+
+$theme-map: null;
+
+$themes: (
+    light: (
+        primaryColor: $light_primary_color,
+        secondaryColor: $light_secondary_color,
+
+        backgroundColor: $light_primary_color,
+        textColor: $light_text_color,
+
+        buttonTextColor: $light_text_color,
+        buttonTextTransform: $button_text_transform,
+        buttonTextHoverColor: $accent_color,
+        buttonColor: $light_primary_color,
+        buttonBorder: $button_border_style $light_primary_color,
+
+        headerBackgroundColor: $light_primary_color,
+        headerBorder: $header_border_style $light_header_border,
+    ),
+    dark: (
+        primaryColor: $dark_primary_color,
+        secondaryColor: $dark_secondary_color,
+
+        backgroundColor: $dark_primary_color,
+        textColor: $dark_text_color,
+
+        buttonTextColor: $dark_text_color,
+        buttonTextTransform: $button_text_transform,
+        buttonTextHoverColor: $accent_color,
+        buttonColor: $dark_primary_color,
+        buttonBorder: $button_border_style $dark_primary_color,
+
+        headerBackgroundColor: $dark_primary_color,
+        headerBorder: $header_border_style $dark_header_border,
+    ),
+    midnight: (
+        primaryColor: $midnight_primary_color,
+        secondaryColor: $midnight_secondary_color,
+
+        backgroundColor: $midnight_primary_color,
+        textColor: $midnight_text_color,
+
+        buttonTextColor: $midnight_text_color,
+        buttonTextTransform: $button_text_transform,
+        buttonTextHoverColor: $accent_color,
+        buttonColor: $midnight_primary_color,
+        buttonBorder: $button_border_style $midnight_primary_color,
+
+        headerBackgroundColor: $midnight_primary_color,
+        headerBorder: $header_border_style $midnight_header_border,
+    )
+);
+
+@mixin themify($themes: $themes ) {
+    @each $theme, $map in $themes {
+        .theme-#{$theme} & {
+            $theme-map: () !global;
+            @each $key, $submap in $map {
+                $value: map-get(map-get($themes, $theme), '#{$key}');
+                $theme-map: map-merge($theme-map, ($key: $value)) !global;
+            }
+            @content;
+            $theme-map: null !global;
+        }
+    }
+}
+
+@function themed($key) {
+    @return map-get($theme-map, $key);
+}

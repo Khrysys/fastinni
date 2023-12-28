@@ -12,7 +12,8 @@ def cert_gen(
     validityStartInSeconds=0,
     validityEndInSeconds=10*365*24*60*60,
     KEY_FILE = "private.key",
-    CERT_FILE="selfsigned.crt"):
+    CERT_FILE="selfsigned.crt",
+    ENV_FILE='.env'):
     #can look at generated file using openssl:
     #openssl x509 -inform pem -in selfsigned.crt -noout -text
     # create a key pair
@@ -38,10 +39,12 @@ def cert_gen(
     with open(KEY_FILE, "wt") as f:
         f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, k).decode("utf-8"))
     import os
-    if os.path.exists(".env"):
-        f = open('.env', 'w')
+    if not os.path.exists(".env"):
+        f = open(ENV_FILE, 'w')
     else:
-        f = open('.env', 'a')
+        f = open(ENV_FILE, 'a')
     f.write(f'\nSSL_KEYFILE={KEY_FILE}\nSSL_CERTFILE={CERT_FILE}')
+    f.close()
 
-cert_gen()
+if __name__ == '_main__':
+    cert_gen()

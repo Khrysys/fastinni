@@ -1,0 +1,21 @@
+
+.loading {
+    display: block;
+    margin-top: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    justify-items: center;
+
+    img {
+        padding-left: 42.5%;
+        width: 15%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .loading img {
+        padding-left: 15%;
+        width: 70%;
+    }
+}

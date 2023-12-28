@@ -1,0 +1,23 @@
+@import "theming";
+
+.header {
+    @include themify() {
+        background-color: themed("headerBackgroundColor");
+        border: themed("headerBorder");
+        color: themed("textColor");
+    }
+
+    overflow: hidden;
+    padding: 0px;
+    margin: 0px;
+
+    a {
+        
+        float: left;
+        display: block;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+}

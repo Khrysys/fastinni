@@ -1,33 +1,26 @@
-import { ajax } from "jquery"
-import { useContext, useEffect, useState } from 'react'
-import { ErrorContext, ErrorDispachContext } from "../contexts/ErrorContext"
-import { ThemeProvider } from "../contexts/ThemeContext"
-import "../css/loading.css"
-import { Container } from "./Container"
-import { Loading } from "./Loading"
+import { AccountProvider } from "../contexts/AccountContext";
+import { ThemeProvider } from "../contexts/ThemeContext";
+import { Footer } from "./Footer";
+import { Header } from "./Header";
+import { ActiveContainerTabProvider } from "../contexts/ActiveContainerTabContext";
+import Container from "./Container";
+
+// Performance check to see how many times this page has been fully rerendered
+let count = 0;
 
 export default function App() {
-	const error = useContext(ErrorContext)
-	const setError = useContext(ErrorDispachContext)
-	const [ isLoaded, setIsLoaded ] = useState(false)
-	const [ serverBuild, setServerBuild ] = useState("")
+    count++;
+    console.log("Rerender Count: " + count);
 
-	useEffect(() => {
-		ajax(process.env.NPM_API_URL + 'csrf/').done(function() { 
-			setIsLoaded(true)
-		})
-	})
-	
+    return <ThemeProvider>
+        <AccountProvider>
+            <ActiveContainerTabProvider>
+                <Header />
 
-	if(!isLoaded) {
-		return <div className="loading">
-			{error != "" && <p className="error">{error}</p>}
-			< Loading />
-		</div>
-	}
+                <Container />
 
-	return < ThemeProvider >
-		{error != "" && <p className="error">{error}</p>}
-		<Container/>
-	</ ThemeProvider >
+                <Footer />
+            </ActiveContainerTabProvider>
+        </AccountProvider>
+    </ThemeProvider>
 }

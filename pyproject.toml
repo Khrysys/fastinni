@@ -19,6 +19,10 @@ datetime = "^5.3"
 requests = "^2.31.0"
 pyopenssl = "^23.3.0"
 
+
+[tool.poetry.group.oauth.dependencies]
+oauthlib = "^3.2.2"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
