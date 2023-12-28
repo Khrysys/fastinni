@@ -15,7 +15,7 @@ sqlmodel = "^0.0.14"
 
 [tool.poetry.group.dev.dependencies]
 cryptography = "^41.0.7"
-datetime = "^5.3"
+datetime = "^5.4"
 requests = "^2.31.0"
 pyopenssl = "^23.3.0"
 
