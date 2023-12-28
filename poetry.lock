@@ -278,13 +278,13 @@ test-randomorder = ["pytest-randomly"]
 
 [[package]]
 name = "datetime"
-version = "5.3"
+version = "5.4"
 description = "This package provides a DateTime data type, as known from Zope. Unless you need to communicate with Zope APIs, you're probably better off using Python's built-in datetime module."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "DateTime-5.3-py3-none-any.whl", hash = "sha256:05669f035ec7ccb24443bda8572078c381edf79c813186f627e9e8e5c6e8e6e6"},
-    {file = "DateTime-5.3.tar.gz", hash = "sha256:4762a9b371ce696b7ffb82b869d2906fad94fdecdb1685bfbec1e2d8f37e5a98"},
+    {file = "DateTime-5.4-py3-none-any.whl", hash = "sha256:88caf4d2441fe479038f4740a1071953686f7c1ed6c9e8c7df9ebe84e592f0c6"},
+    {file = "DateTime-5.4.tar.gz", hash = "sha256:568ea851d40773d846c0b5efe260aecb717c2b933c052a3c13b712809c16b57d"},
 ]
 
 [package.dependencies]
@@ -891,4 +891,4 @@ testing = ["coverage (>=5.0.3)", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "298ffbf5414ffb571a171aeafc59a59279ebe7bcd05e094125a3b627068b279f"
+content-hash = "5bf7c0534674416ec336919f7e4f70b4697490305623a68018b54b459580d563"
