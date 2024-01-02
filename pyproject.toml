@@ -7,15 +7,15 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.10"
-fastapi = "^0.104.1"
-uvicorn = "^0.24.0.post1"
+fastapi = "^0.108.0"
+uvicorn = "^0.25.0"
 python-dotenv = "^1.0.0"
 sqlmodel = "^0.0.14"
 
 
 [tool.poetry.group.dev.dependencies]
 cryptography = "^41.0.7"
-datetime = "^5.3"
+datetime = "^5.4"
 requests = "^2.31.0"
 pyopenssl = "^23.3.0"
 
