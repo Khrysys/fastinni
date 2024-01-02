@@ -20,8 +20,7 @@ module.exports = {
         }),
         new CopyWebpackPlugin({
             patterns: [
-                {'from': './static/img', 'to': '../html/img'},
-                {'from': './static/webfonts', 'to': '../html/webfonts'},
+                {'from': './static/img', 'to': '../html/img'}
             ],
             
         }),
@@ -50,5 +49,8 @@ module.exports = {
         splitChunks: {
             chunks: 'all'
         }
+    },
+    performance: {
+        maxAssetSize: 4194304
     }
 };

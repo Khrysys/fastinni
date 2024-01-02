@@ -1,39 +1,38 @@
 import { createContext, useEffect, useState } from "react";
 
-export const ActiveContainerTab = createContext();
-export const ActiveContainerTabDispatch = createContext();
+export const ActiveContainerTab = createContext({activeTab: "", setTab: function() {}});
 
-export const ContainerTabs = {
+export const ContainerTabTypes = {
     Blog: "blog",
-    Profile: "profile",
     Contact: "contact",
     Friends: "friends",
-    Login: "login"
+    Login: "login",
+    Profile: "profile",
 }
 
 export function ActiveContainerTabProvider(props) {
-    const [activeTab, setActiveTab] = useState(ContainerTabs.Blog);
+    const [activeTab, setActiveTab] = useState(ContainerTabTypes.Blog);
 
-    useEffect(()=> {
+    useEffect(() => {
         var hash = window.location.hash;
         switch(hash) {
             case "#blog":
-                setTab(ContainerTabs.Blog)
+                setTab(ContainerTabTypes.Blog)
                 break
             case "#profile":
-                setTab(ContainerTabs.Profile)
+                setTab(ContainerTabTypes.Profile)
                 break
             case "#contact":
-                setTab(ContainerTabs.Contact)
+                setTab(ContainerTabTypes.Contact)
                 break
             case "#friends":
-                setTab(ContainerTabs.Friends)
+                setTab(ContainerTabTypes.Friends)
                 break
             case "#login":
-                setTab(ContainerTabs.Login)
+                setTab(ContainerTabTypes.Login)
                 break
-            case _:
-                setTab(ContainerTabs.Blog)
+            default:
+                setTab(ContainerTabTypes.Blog)
         }
     }, [])
 
@@ -43,9 +42,7 @@ export function ActiveContainerTabProvider(props) {
         setActiveTab(val)
     }
 
-    return <ActiveContainerTab.Provider value={activeTab}>
-        <ActiveContainerTabDispatch.Provider value={setTab}>
-            {props.children}
-        </ActiveContainerTabDispatch.Provider>
+    return <ActiveContainerTab.Provider value={{activeTab, setTab }}>
+        {props.children}
     </ActiveContainerTab.Provider>
 }

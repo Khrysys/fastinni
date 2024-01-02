@@ -72,6 +72,12 @@
     }
 
     .third-party {
+        display: grid;
+
+        p {
+            justify-self: center;
+        }
+
         .icons {
             display: flex;
             justify-content: space-around;

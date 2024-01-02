@@ -1,3 +1,3 @@
-export function SettingsContainer() {
+export default function SettingsContainer() {
     return <></>
 }

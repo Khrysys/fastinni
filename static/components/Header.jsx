@@ -1,6 +1,6 @@
-import { FaMoon, FaBars, FaSun } from "react-icons/fa6"
+import { FaBars } from "react-icons/fa6"
 import { useContext, useState } from "react"
-import { ActiveContainerTabDispatch, BlogPostsShowingContext, ContactFormShowingContext, ContainerTabs, LoginShowingContext, ProfileShowingContext } from "../contexts/ActiveContainerTabContext"
+import { ActiveContainerTab, ContainerTabTypes } from "../contexts/ActiveContainerTabContext"
 
 import "../css/header.css"
 import { isLoginContext } from "../contexts/AccountContext"
@@ -8,12 +8,9 @@ import { isLoginContext } from "../contexts/AccountContext"
 export function Header() {
     const [isResponsive, setIsResponsive] = useState(false)
 
-    const setTab = useContext(ActiveContainerTabDispatch);
-
-    const isLogin = useContext(isLoginContext)
-    //const image = useContext(ImageContext)
-    //const login = useContext(LoginContext)
-    //const setLogin = useContext(LoginDispatchContext)
+    const {tab, setTab} = useContext(ActiveContainerTab);
+    const {isLogin, setIsLogin} = useContext(isLoginContext)
+    //const {image, setImage} = useContext(ImageContext)
 
     var classes = "header";
     if (isResponsive) {
@@ -21,15 +18,15 @@ export function Header() {
     }
 
     return <div className={classes}>
-        <a onClick={() => setTab(ContainerTabs.Blog)}>Blog</a>
-        <a onClick={() => setTab(ContainerTabs.Contact)}>Contact</a>
+        <a onClick={() => setTab(ContainerTabTypes.Blog)}>Blog</a>
+        <a onClick={() => setTab(ContainerTabTypes.Contact)}>Contact</a>
         {
             isLogin ?
             <>
-                <a onClick={() => setTab(ContainerTabs.Profile)}>Profile</a>
-                <a onClick={() => setTab(ContainerTabs.Friends)}>Friends</a>
+                <a onClick={() => setTab(ContainerTabTypes.Profile)}>Profile</a>
+                <a onClick={() => setTab(ContainerTabTypes.Friends)}>Friends</a>
             </> :
-            <a onClick={() => setTab(ContainerTabs.Login)}>Login</a>
+            <a onClick={() => setTab(ContainerTabTypes.Login)}>Login</a>
         }
 
         <a className="icon" onClick={() => setIsResponsive(!isResponsive)}>
