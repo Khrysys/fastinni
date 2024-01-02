@@ -2,14 +2,14 @@ import { FaBars } from "react-icons/fa6"
 import { useContext, useState } from "react"
 import { ActiveContainerTab, ContainerTabTypes } from "../contexts/ActiveContainerTabContext"
 
-import "../css/header.css"
-import { isLoginContext } from "../contexts/AccountContext"
+import "../scss/header.scss"
+import { isLoggedInContext } from "../contexts/AccountContext"
 
 export function Header() {
     const [isResponsive, setIsResponsive] = useState(false)
 
     const {tab, setTab} = useContext(ActiveContainerTab);
-    const {isLogin, setIsLogin} = useContext(isLoginContext)
+    const {isLogin, setIsLogin} = useContext(isLoggedInContext)
     //const {image, setImage} = useContext(ImageContext)
 
     var classes = "header";

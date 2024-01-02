@@ -1,20 +1,20 @@
 import { createContext, useState } from "react";
 
-export const isLoginContext = createContext()
-export const isSignupForm = createContext()
+export const isLoggedInContext = createContext({})
+export const isSigningUp = createContext({})
 
-export function isSignupProvider(props) {
+export function SignupProvider(props) {
     const [isSignup, setIsSignup] = useState(false)
 
-    return <isSignupForm.Provider value={{isSignup, setIsSignup}}>
+    return <isSigningUp.Provider value={{isSignup, setIsSignup}}>
         {props.children}
-    </isSignupForm.Provider>
+    </isSigningUp.Provider>
 }
 
 export function AccountProvider(props) {
     const [isLogin, isLoginDispatch] = useState(false);
 
-    return <isLoginContext.Provider value={{isLogin, isLoginDispatch}}>
+    return <isLoggedInContext.Provider value={{isLogin, isLoginDispatch}}>
         {props.children}
-    </isLoginContext.Provider>
+    </isLoggedInContext.Provider>
 }

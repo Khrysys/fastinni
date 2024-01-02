@@ -1,6 +1,6 @@
-import "../css/loading.css";
+import "../scss/loading.scss";
 
-export default function LoadingContainer() {
+export function LoadingContainer() {
     return <div className="loading">
         <img src={require("../img/loading.gif")} alt={"Loading GIF"} />
     </div>

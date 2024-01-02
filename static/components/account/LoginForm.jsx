@@ -1,6 +1,9 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
+import Form from "../../blocks/Form";
+import ThirdParty from "./ThirdParty";
+import { ajax } from "jquery";
 
-export default function LoginForm() {
+export function LoginForm() {
     const [tag, setTag] = useState("")
     const [password, setPassword] = useState("")
     const [remember, setRemember] = useState(true)
@@ -42,26 +45,7 @@ export default function LoginForm() {
             <input type="checkbox" id="remember" defaultChecked={remember} onChange={() => setRemember(!remember)}/>
             <label htmlFor="remember">Remember Me</label>
             <input type="submit" name="Login"/>
-            <div className="third-party">
-                <p>Additional Sign-in Services</p>
-                <div className="icons">
-                    <a href={process.env.NPM_API_URL + "oauth/google/"}>
-                        < FaSquareGooglePlus size={40}/>
-                    </a>
-                    <a href={process.env.NPM_API_URL + "oauth/github/"}>
-                        < FaSquareGithub size={40} />
-                    </a>
-                    <a href={process.env.NPM_API_URL + "oauth/discord"}>
-                        < BiLogoDiscord size={40}/>
-                    </a>
-                    <a href={process.env.NPM_API_URL + "oauth/twitter/"}>
-                        < FaSquareXTwitter size={40} />
-                    </a>
-                    <a href={process.env.NPM_API_URL + "oauth/steam/"}>
-                        < FaSquareSteam size={40} />
-                    </a>
-                </div>
-            </div>
+            <ThirdParty/>
         </Form>
     </>
 }

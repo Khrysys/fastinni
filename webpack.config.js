@@ -1,47 +1,70 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const DotenvWebpackPlugin = require('dotenv-webpack');
+const path = require('path');
 
 module.exports = {
-    entry: './html/main.js',
+    entry: './static/main.jsx',
     mode: 'development',
     stats: {
         errorDetails: true
     },
+    
+    output: {
+        filename: 'js/[name].js',
+        path: path.resolve(__dirname, 'html'),
+    },
+
+    resolve: {
+        extensions: ['.js', '.jsx', '.json', '.wasm']
+    },
+
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Fastinni', 
-            favicon: "./static/favicon.ico"
-        }),
-        new DotenvWebpackPlugin({
-            path: "./.env",
-            safe: false
-        }),
-        new CopyWebpackPlugin({
-            patterns: [
-                {'from': './static/img', 'to': '../html/img'}
-            ],
+            favicon: "./static/favicon.ico",
             
         }),
     ],
-    output: {
-      filename: 'js/[name].js',
-      path: path.resolve(__dirname, 'html'),
-    },
+
     module: {
         rules: [
             {
-                test: /\.css$/i,
-                use: ['style-loader', 'css-loader']
+                test: /\.jsx$/i,
+                exclude: '/node-modules/',
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            [
+                                "@babel/preset-react", 
+                                {
+                                    "runtime": "automatic"
+                                }
+                            ],
+                            [
+                                "@babel/preset-env",
+                                {
+                                    "targets": [
+                                        "> 0.25%, not dead"
+                                    ]
+                                }
+                            ]
+                        ],
+                        plugins: [
+                            [
+                                "macros",
+                                {}
+                            ]
+                        ]
+                    }
+                }
+            },
+            {
+                test: /\.scss$/i,
+                use: ['style-loader', 'css-loader', "sass-loader"]
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,
                 type: 'asset/resource'
-            },
-            {
-                test: /\.(woff|woff2|eot|ttf|otf)$/i,
-                type: 'asset/resource',
             },
         ]
     },
@@ -49,8 +72,5 @@ module.exports = {
         splitChunks: {
             chunks: 'all'
         }
-    },
-    performance: {
-        maxAssetSize: 4194304
     }
-};
+}
