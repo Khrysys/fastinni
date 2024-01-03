@@ -6,6 +6,11 @@ export function SignupForm() {
 
     }
 
+    // This gets the CSRF header info for this form
+    useEffect(() => {
+        ajax(location.origin + "/api/latest/account/signup")
+    }, [])
+
     return <>
         <header>
             <a>

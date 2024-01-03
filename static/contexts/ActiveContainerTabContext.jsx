@@ -38,7 +38,6 @@ export function ActiveContainerTabProvider(props) {
 
     function setTab(val) {
         window.location.hash = val
-        console.log(val)
         setActiveTab(val)
     }
 

@@ -10,6 +10,7 @@
     overflow: hidden;
     padding: 0px;
     margin: 0px;
+    display: block;
 
     a {
         
@@ -19,5 +20,36 @@
         padding: 14px 16px;
         text-decoration: none;
         font-size: 17px;
+    }
+
+    a.icon {
+        display: none;
+    }
+
+    @media screen and (max-width: 600px) {
+        a {
+            display: none;
+        }
+
+        a.icon {
+            display: block;
+            float: right;
+        } 
+    }
+}
+
+.header.responsive {
+
+    @media screen and (max-width: 600px) {
+
+        a {
+            float: none;
+            text-align: left;
+            display: block;
+        }
+
+        a.icon {
+            margin-right: 0px;
+        }
     }
 }

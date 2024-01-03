@@ -3,15 +3,14 @@ import { useContext, useState } from "react"
 import { ActiveContainerTab, ContainerTabTypes } from "../contexts/ActiveContainerTabContext"
 
 import "../scss/header.scss"
-import { isLoggedInContext } from "../contexts/AccountContext"
+import { AccountContext } from "../contexts/AccountContext"
 
 export function Header() {
     const [isResponsive, setIsResponsive] = useState(false)
 
     const {tab, setTab} = useContext(ActiveContainerTab);
-    const {isLogin, setIsLogin} = useContext(isLoggedInContext)
     //const {image, setImage} = useContext(ImageContext)
-
+    const {state, dispatch} = useContext(AccountContext)
     var classes = "header";
     if (isResponsive) {
         classes += " responsive";
@@ -21,7 +20,7 @@ export function Header() {
         <a onClick={() => setTab(ContainerTabTypes.Blog)}>Blog</a>
         <a onClick={() => setTab(ContainerTabTypes.Contact)}>Contact</a>
         {
-            isLogin ?
+            state.isLoggedIn ?
             <>
                 <a onClick={() => setTab(ContainerTabTypes.Profile)}>Profile</a>
                 <a onClick={() => setTab(ContainerTabTypes.Friends)}>Friends</a>

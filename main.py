@@ -19,7 +19,8 @@ if __name__ == '__main__':
         port = int(getenv("PORT", 8000)),
         reload=bool(getenv("RELOAD", True)),
         ssl_certfile=getenv("SSL_CERTFILE"),
-        ssl_keyfile=getenv("SSL_KEYFILE")
+        ssl_keyfile=getenv("SSL_KEYFILE"),
+        timeout_graceful_shutdown=1
     )
 
     server = Server(config)

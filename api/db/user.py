@@ -12,7 +12,7 @@ class User(SQLModel, table=True): # type: ignore
     # This would override things that are automatically filled by the database or things that would require 
     # future user input but are not required for user operation.
     # This is how Users are organized in the database
-    # This is the most important field, as the internal server uses IDs to check item ownership
+    # This is the most important field, as the internal server uses IDs to check ownership and table checks
     id: Optional[int] = Field(default=None, primary_key=True, unique=True)
     # This is a toggle on if someone not on your friends list goes to your profile, if anything besides
     # the User ID and tag are shown
@@ -25,8 +25,8 @@ class User(SQLModel, table=True): # type: ignore
     # -----------------------------------------------------
     # --------- LEVEL TWO REQUIREMENTS
     # -----------------------------------------------------
-    # There are at level 2 requirement, (highly recommended but not required).
-    # Six of these has a boolean toggle if it is publicly shown on your profile (phone, email, address)
+    # These are at level 2 requirement, (highly recommended but not required).
+    # Three of these has a boolean toggle if it is publicly shown on your profile (phone, email, address)
     # This toggle has no effect if the main public_profile is false.
     # You can use many different ways of storing a phone number, here a string is used to give the potential for
     # Extensions and other country codes.
@@ -36,6 +36,10 @@ class User(SQLModel, table=True): # type: ignore
     # to access your Google Data through the OAuth scopes.
     email: Optional[str] = Field(default=None, unique=True)
     public_email: Optional[bool] = Field(default=None)
+    # Your address is here mostly as an example. Nothing really needs it, but it could be useful in a site that involves purchases
+    # to calculate sales tax. This is not unique, as multiple people in the same house may use this site.
+    address: Optional[str] = Field(default=None)
+    public_address: Optional[bool] = Field(default=None)
     
     # The password hash is only at a level 2 requirement due to OAuth scopes potentially being used instead.
     # This is a hex code representing the password.
@@ -46,7 +50,7 @@ class User(SQLModel, table=True): # type: ignore
     # but that seems a bit excessive when scaling.
     password_hash: Optional[str] = Field(default=None)
     # The profile image is exactly what it seems like. When this is None, it signals to load the default
-    # image from /api/img/default_profile.png
+    # image from /img/default_profile.png
     profile_image: Optional[str] = Field(default=None)
     
     # -----------------------------------------------------
@@ -54,9 +58,32 @@ class User(SQLModel, table=True): # type: ignore
     # -----------------------------------------------------
     # Level three is effectively just for OAuth scopes (potentially useful but should have no detriment if not found)
     # These ensure that login is proper and not cracked.
-    google_id: Optional[int] = Field(default=None, unique=True)
+    google_id: Optional[str] = Field(default=None, unique=True)
     
     # -----------------------------------------------------
     # --------- LEVEL FOUR REQUIREMENTS
     # -----------------------------------------------------
     # Level four is for cosmetic settings (completely optional)
+    theme: Optional[str] = Field(default="dark")
+
+    def get_own_data(self):
+        # Here we can load all of the data since there are no access restrictions since we are accessing ourselves
+        return self.model_dump(exclude="password_hash"), 200 # type: ignore
+    
+    def get_public_data(self):
+        if not self.public_profile:
+            return {
+                "id": self.id,
+                "profile_image": self.profile_image,
+                "tag": self.tag
+            }, 200
+        else:
+            return {
+                "id": self.id,
+                "profile_image": self.profile_image,
+                "tag": self.tag,
+                "phone" : self.phone if self.public_phone else None,
+                "email":  self.email if self.public_email else None,
+                "address": self.address if self.public_address else None,
+                "profile_image": self.profile_image,
+            }, 200

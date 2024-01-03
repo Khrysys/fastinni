@@ -1,6 +1,7 @@
-import { createContext, useState } from "react";
+import { createContext, useReducer, useState } from "react";
+import { ajax } from "jquery";
 
-export const isLoggedInContext = createContext({})
+export const AccountContext = createContext({})
 export const isSigningUp = createContext({})
 
 export function SignupProvider(props) {
@@ -11,10 +12,43 @@ export function SignupProvider(props) {
     </isSigningUp.Provider>
 }
 
-export function AccountProvider(props) {
-    const [isLogin, isLoginDispatch] = useState(false);
+function reducer(state, action) {
+    switch(action.type) {
+        case "have_google_code":
+            ajax(
+                location.origin + '/api/latest/oauth/google/finalize',
+                {
+                    data: {
+                        code: new URL(location.href).searchParams.get('google_code')
+                    }
+                }
+            ).done(function(response) {
+                console.log(response)
+                return {
+                    ...state,
+                    isLoggedIn: false
+                }
+            })
+    }
+}
 
-    return <isLoggedInContext.Provider value={{isLogin, isLoginDispatch}}>
+export function AccountProvider(props) {
+    const [state, dispatch] = useReducer(reducer, {
+        isLoggedIn: false, 
+        id: 0, 
+        public_profile: false,
+        tag: "",
+        phone: "",
+        public_phone: false,
+        email: "",
+        public_email: false,
+        address: "",
+        public_address: false,
+        profile_image: "",
+        theme: 'theme-dark'
+    })
+
+    return <AccountContext.Provider value={{state, dispatch}}>
         {props.children}
-    </isLoggedInContext.Provider>
+    </AccountContext.Provider>
 }

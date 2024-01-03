@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from oauthlib.oauth2 import WebApplicationClient
 from os import getenv
 from requests import get
 from functools import lru_cache
 from json import dumps
 from requests import get, post
-from ...db import User
+from sqlmodel import SQLModel, Session, select
+from ...db import User, engine
 
 @lru_cache
 def get_google_provider_cfg():
@@ -32,8 +33,11 @@ def redirect_to_google_login(request: Request):
     return RedirectResponse(request_uri)
 
 @app.get("/callback")
-def google_callback(request: Request):
-    code = request.get("code")
+def google_callback(code: str):
+    return RedirectResponse(f'../../../../?google_code={code}', )
+    
+@app.get("/finalize")
+def finalize_google_login(code: str, request: Request):
     
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]# Prepare and send a request to get tokens! Yay tokens!
@@ -67,7 +71,12 @@ def google_callback(request: Request):
         return "User email not available or not verified by Google.", 400
     
     # Find if the user already exists, and if not, add a new user
-    
-    
-    # redirect them back to the profile page 
-    
+    with Session(engine) as session:
+        statement = select(User).where(User.email==users_email)
+        results = session.exec(statement)
+
+        user = results.one_or_none()
+        if user is not None:
+            
+            (data, status) = user.get_own_data()
+            response = RedirectResponse('../../../../', status_code=status)

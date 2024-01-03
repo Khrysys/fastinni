@@ -7,12 +7,16 @@ export function LoginForm() {
     const [tag, setTag] = useState("")
     const [password, setPassword] = useState("")
     const [remember, setRemember] = useState(true)
+    const [headerData, setHeaderData] = useState("")
     
     function onSubmit() {
         ajax(
-            window.location.origin + "/api/latest/account/login/", 
+            location.origin + "/api/latest/account/login/", 
             {
                 method: "POST",
+                headers: {
+                    X_FASTINNI_CSRF: headerData
+                },
                 data: {
                     'tag': tag,
                     'password': password,
@@ -30,8 +34,12 @@ export function LoginForm() {
 
     // This gets the CSRF header info for this form
     useEffect(() => {
-        ajax(window.location.origin + "/api/latest/account/login")
-    })
+        ajax(location.origin + "/api/latest/account/login").done(function(response) {
+            setHeaderData(response.data)
+        }).fail(function(error) {
+            console.log(error)
+        })
+    }, [])
 
     return <>
         <header>

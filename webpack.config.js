@@ -1,9 +1,14 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require('path');
+
+const devMode = process.env.NODE_ENV != 'production';
+console.log(process.env.NODE_ENV)
+console.log(devMode)
 
 module.exports = {
     entry: './static/main.jsx',
-    mode: 'development',
+    mode: devMode ? "development" : "production",
     stats: {
         errorDetails: true
     },
@@ -21,8 +26,8 @@ module.exports = {
         new HtmlWebpackPlugin({
             title: 'Fastinni', 
             favicon: "./static/favicon.ico",
-            
         }),
+        new MiniCssExtractPlugin({})
     ],
 
     module: {
@@ -60,7 +65,7 @@ module.exports = {
             },
             {
                 test: /\.scss$/i,
-                use: ['style-loader', 'css-loader', "sass-loader"]
+                use: [devMode ? "style-loader" : MiniCssExtractPlugin.loader, 'css-loader', "sass-loader"]
             },
             {
                 test: /\.(png|svg|jpg|jpeg|gif)$/i,

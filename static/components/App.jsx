@@ -1,26 +1,38 @@
-import { AccountProvider } from "../contexts/AccountContext";
-import { ThemeProvider } from "../contexts/ThemeContext";
+
 import { Footer } from "./Footer";
 import { Header } from "./Header";
 import { ActiveContainerTabProvider } from "../contexts/ActiveContainerTabContext";
 import Container from "./Container";
+import { useContext, useEffect } from "react";
+import { AccountContext } from "../contexts/AccountContext";
 
 // Performance check to see how many times this page has been fully rerendered
-let count = 0;
+let count = 0
 
 export default function App() {
-    count++;
-    console.log("Rerender Count: " + count);
+    count++
+    console.log("Rerender Count: " + count)
 
-    return <ThemeProvider>
-        <AccountProvider>
-            <ActiveContainerTabProvider>
-                <Header />
+    const {state, dispatch} = useContext(AccountContext)
 
-                <Container />
+    useEffect(() => {
+        if(window.location.search !== "") {
+            // We have a login code
+            var code = new URL(location.href).searchParams.get('google_code')
+            console.log(code)
 
-                <Footer />
-            </ActiveContainerTabProvider>
-        </AccountProvider>
-    </ThemeProvider>
+            if(code != null) {
+                dispatch({type: 'have_google_code'})
+            }
+        }
+    }, [])
+    // If we don't, proceed as if normal
+
+    return <ActiveContainerTabProvider>
+        <Header />
+
+        <Container />
+
+        <Footer />
+    </ActiveContainerTabProvider>
 }
