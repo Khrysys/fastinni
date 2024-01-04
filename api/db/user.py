@@ -1,9 +1,10 @@
 from datetime import datetime, timedelta
 from os import getenv
-from typing import Optional, Any
-from jwt import decode, encode, ExpiredSignatureError
-from sqlmodel import SQLModel, Field, Session, select
-from . import engine
+from typing import List, Optional, Any
+from jwt import decode, encode
+from sqlmodel import Relationship, SQLModel, Field, Session, select
+
+from . import AccessClient, engine
 
 class User(SQLModel, table=True): # type: ignore
     # -----------------------------------------------------
@@ -69,6 +70,11 @@ class User(SQLModel, table=True): # type: ignore
     # -----------------------------------------------------
     # Level four is for cosmetic settings (completely optional)
     theme: Optional[str] = Field(default="dark")
+
+    # -----------------------------------------------------
+    # --------- RELATIONSHIP COLUMNS
+    # -----------------------------------------------------
+    access_clients: List["AccessClient"] = Relationship(back_populates='user')
 
     
 
