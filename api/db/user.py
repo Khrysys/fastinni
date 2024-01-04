@@ -1,5 +1,9 @@
-from typing import Optional
-from sqlmodel import SQLModel, Field
+from datetime import datetime, timedelta
+from os import getenv
+from typing import Optional, Any
+from jwt import decode, encode, ExpiredSignatureError
+from sqlmodel import SQLModel, Field, Session, select
+from . import engine
 
 class User(SQLModel, table=True): # type: ignore
     # -----------------------------------------------------
@@ -20,7 +24,7 @@ class User(SQLModel, table=True): # type: ignore
     # The user tag is what is primarily used for API requests. They should be unique, utf-8 encoded, all-lowercase,
     # easily memorizable strings since they are how pretty much everything happens. Friend lists link to tags instead of IDs
     # Its alias is username so it should be identifiable from both columns
-    tag: str = Field(alias="username", unique=True, )
+    tag: str = Field(alias="username", unique=True)
     
     # -----------------------------------------------------
     # --------- LEVEL TWO REQUIREMENTS
@@ -66,6 +70,8 @@ class User(SQLModel, table=True): # type: ignore
     # Level four is for cosmetic settings (completely optional)
     theme: Optional[str] = Field(default="dark")
 
+    
+
     def get_own_data(self):
         # Here we can load all of the data since there are no access restrictions since we are accessing ourselves
         return self.model_dump(exclude="password_hash"), 200 # type: ignore
@@ -76,7 +82,7 @@ class User(SQLModel, table=True): # type: ignore
                 "id": self.id,
                 "profile_image": self.profile_image,
                 "tag": self.tag
-            }, 200
+            }
         else:
             return {
                 "id": self.id,
@@ -86,4 +92,38 @@ class User(SQLModel, table=True): # type: ignore
                 "email":  self.email if self.public_email else None,
                 "address": self.address if self.public_address else None,
                 "profile_image": self.profile_image,
-            }, 200
+            }
+        
+    def create_login_jwt(self):
+        secret = getenv("LOGIN_SECRET", "")
+
+        data = {
+            "id": self.id,
+            "tag": self.tag,
+            "password_hash": self.password_hash,
+            "exp": datetime.utcnow() + timedelta(days=90),
+            "nbf": datetime.utcnow()
+        }
+
+        return encode(data, secret, "HS256")
+        
+    @staticmethod
+    def validate_jwt(jwt: str) -> bool | Any:
+        secret = getenv("LOGIN_SECRET", "")
+        try:
+            data = decode(jwt, secret)
+            id = data['id']
+            tag = data['tag']
+            password_hash = data['password_hash']
+        except:
+            return False
+
+        
+        with Session(engine) as session:
+            statement = select(User).where(User.id==id).where(User.tag==tag).where(User.password_hash==password_hash)
+            result = session.exec(statement)
+            user = result.one_or_none()
+
+            if user is not None: 
+                return user
+            return False

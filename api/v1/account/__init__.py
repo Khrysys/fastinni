@@ -12,15 +12,11 @@ app = APIRouter(prefix='/account', tags=['Account'])
 @app.get('/login')
 def get_login_header_info() -> Dict[str, str]:
     secret = getenv("LOGIN_SECRET", "")
-    date = datetime.utcnow() + timedelta(milliseconds=15)
+    date = datetime.utcnow() + timedelta(minutes=15)
     encoded = encode({'nbf': mktime(datetime.utcnow().timetuple()), 'exp': mktime(date.timetuple())}, secret, algorithm="HS256")
 
     # Return the name of the header, and the jwt that should go inside of the header data
     return {"name": "X_FASTINNI_CSRF", "data": encoded}
-
-class LoginData(BaseModel):
-    tag: str
-    password: str
 
 @app.post('/login')
 def try_login(data: str | bytes, x_fastinni_csrf: Annotated[str | None, Header()] = None):

@@ -13,3 +13,7 @@ __pycache__/
 # Development / temporary files
 private.key
 selfsigned.crt
+
+# Database Migration files
+alembic.ini
+migrations/

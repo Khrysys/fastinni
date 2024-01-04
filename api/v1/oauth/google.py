@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 from oauthlib.oauth2 import WebApplicationClient
@@ -33,12 +34,7 @@ def redirect_to_google_login(request: Request):
     return RedirectResponse(request_uri)
 
 @app.get("/callback")
-def google_callback(code: str):
-    return RedirectResponse(f'../../../../?google_code={code}', )
-    
-@app.get("/finalize")
-def finalize_google_login(code: str, request: Request):
-    
+def google_login_callback(code: str, request: Request):
     google_provider_cfg = get_google_provider_cfg()
     token_endpoint = google_provider_cfg["token_endpoint"]# Prepare and send a request to get tokens! Yay tokens!
     
@@ -72,11 +68,14 @@ def finalize_google_login(code: str, request: Request):
     
     # Find if the user already exists, and if not, add a new user
     with Session(engine) as session:
-        statement = select(User).where(User.email==users_email)
+        statement = select(User).where(User.email==users_email).where(User.google_id==unique_id)
         results = session.exec(statement)
 
         user = results.one_or_none()
         if user is not None:
             
-            (data, status) = user.get_own_data()
-            response = RedirectResponse('../../../../', status_code=status)
+            jwt = user.get_login_jwt
+
+
+
+            return RedirectResponse('../../../../?login=')
