@@ -9,9 +9,6 @@ class ResponseTypes(StrEnum):
     code = 'code'
     authorization_code = 'authorization_code'
 
-class PossibleScopes(StrEnum):
-    pass
-
 class AccessClient(SQLModel, table=True):
     id: Optional[int] = Field(primary_key=True, unique=True, nullable=False)
     user: Optional["User"] = Relationship(back_populates='access_clients') # type: ignore

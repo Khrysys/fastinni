@@ -1,10 +1,14 @@
 from datetime import datetime, timedelta
 from os import getenv
 from typing import List, Optional, Any
+from fastapi import Depends
 from jwt import decode, encode
-from sqlmodel import Relationship, SQLModel, Field, Session, select
+from sqlmodel import Relationship, SQLModel, Field
+from hashlib import sha512
+from passlib.context import CryptContext
 
-from . import AccessClient, engine
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 class User(SQLModel, table=True): # type: ignore
     # -----------------------------------------------------
@@ -54,6 +58,19 @@ class User(SQLModel, table=True): # type: ignore
     # We could simply throw a 400 and make the user restart since the hash would change, 
     # but that seems a bit excessive when scaling.
     password_hash: Optional[str] = Field(default=None)
+
+    @property
+    def password(self):
+        return self.password_hash
+
+    @password.setter
+    def password(self, val):
+        self.password_hash = pwd_context.hash(val)
+
+    def check_password(self, val):
+        return pwd_context.verify(val, self.password_hash) # type: ignore
+
+
     # The profile image is exactly what it seems like. When this is None, it signals to load the default
     # image from /img/default_profile.png
     profile_image: Optional[str] = Field(default=None)
@@ -74,10 +91,10 @@ class User(SQLModel, table=True): # type: ignore
     # -----------------------------------------------------
     # --------- RELATIONSHIP COLUMNS
     # -----------------------------------------------------
-    access_clients: List["AccessClient"] = Relationship(back_populates='user')
-
     
-
+    # -----------------------------------------------------
+    # --------- UTILITY FUNCTIONS
+    # -----------------------------------------------------
     def get_own_data(self):
         # Here we can load all of the data since there are no access restrictions since we are accessing ourselves
         return self.model_dump(exclude="password_hash"), 200 # type: ignore
@@ -114,7 +131,7 @@ class User(SQLModel, table=True): # type: ignore
         return encode(data, secret, "HS256")
         
     @staticmethod
-    def validate_jwt(jwt: str) -> bool | Any:
+    async def validate_jwt(jwt: str) -> Optional[Any]:
         secret = getenv("LOGIN_SECRET", "")
         try:
             data = decode(jwt, secret)
@@ -123,13 +140,4 @@ class User(SQLModel, table=True): # type: ignore
             password_hash = data['password_hash']
         except:
             return False
-
-        
-        with Session(engine) as session:
-            statement = select(User).where(User.id==id).where(User.tag==tag).where(User.password_hash==password_hash)
-            result = session.exec(statement)
-            user = result.one_or_none()
-
-            if user is not None: 
-                return user
-            return False
+        return User.get_self_by_password_and_id(id, tag, password_hash)

@@ -14,6 +14,6 @@ __pycache__/
 private.key
 selfsigned.crt
 
-# Database Migration files
-alembic.ini
-migrations/
+# Database Migration files (not all of them, due to modifications)
+migrations/versions/
+migrations/README
