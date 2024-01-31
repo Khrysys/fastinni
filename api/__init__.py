@@ -1,8 +1,15 @@
 from fastapi import FastAPI
-import jwt
 
-app = FastAPI(title="Fastinni", docs_url='/docs', redoc_url=None)
-from .v1 import app as v1
-app.include_router(v1)
-from .routers import latest
-app.include_router(latest)
+
+app = FastAPI(
+    debug=False,
+    title="Fastinni API",
+    summary="",
+    description="",
+    version="1.0.0",
+    docs_url=None, 
+    redoc_url='/docs'
+)
+
+from .account import app as account
+app.include_router(account)
