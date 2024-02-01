@@ -4,19 +4,34 @@
 
 # run with `python api`
 
+
+
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi_csrf_protect import CsrfProtect
+from pydantic import BaseModel
 from uvicorn import Server, Config
 from os import getenv
 from asyncio import run
 
 load_dotenv()
 
+# CSRF setup things
+class CsrfSettings(BaseModel):
+  secret_key:str = 'Kaakaww!'
+@CsrfProtect.load_config # type: ignore
+def csrf_settings():
+    return CsrfSettings()
+
 # Rename the app in this file, since it's declared as app in __init__.py
 from api import app as api
 
 app = FastAPI(title="Fastinni", docs_url=None, redoc_url=None)
 app.mount('/api', api)
+app.add_middleware(CsrfProtect)
+
+# Import the exceptions here, since the app has been instantiated.
+import api.exceptions
 
 # FastAPI is responsible for all of the actual code, but uvicorn is what makes it web compatible.
 uvicorn_config = Config(

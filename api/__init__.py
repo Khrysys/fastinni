@@ -13,3 +13,5 @@ app = FastAPI(
 
 from .account import app as account
 app.include_router(account)
+from .security import app as security
+app.include_router(security)
