@@ -10,7 +10,8 @@ app = APIRouter(prefix='/security', tags=['Security'])
 @app.get('/csrf')
 async def get_csrf_token(csrf_protect:CsrfProtect = Depends()):
 	response = JSONResponse(status_code=200, content={'csrf_token':'cookie'})
-	csrf_protect.set_csrf_cookie(response) # type: ignore
+	(_, token) = csrf_protect.generate_csrf_tokens()
+	csrf_protect.set_csrf_cookie(token, response)
 	return response
 
 # This is thrown for values that are mentioned under OWasp's Input Validation cheat sheet that do not meet requirements.

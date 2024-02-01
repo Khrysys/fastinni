@@ -8,6 +8,7 @@
 
 from dotenv import load_dotenv
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from fastapi_csrf_protect import CsrfProtect
 from pydantic import BaseModel
 from uvicorn import Server, Config
@@ -28,7 +29,7 @@ from api import app as api
 
 app = FastAPI(title="Fastinni", docs_url=None, redoc_url=None)
 app.mount('/api', api)
-app.add_middleware(CsrfProtect)
+app.mount('/', StaticFiles(directory='html', html=True))
 
 # Import the exceptions here, since the app has been instantiated.
 import api.exceptions

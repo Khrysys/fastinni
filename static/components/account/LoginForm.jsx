@@ -11,7 +11,7 @@ export function LoginForm() {
     
     function onSubmit() {
         ajax(
-            location.origin + "/api/latest/account/login/", 
+            location.origin + "/api/account/login/", 
             {
                 method: "POST",
                 headers: {
@@ -34,7 +34,7 @@ export function LoginForm() {
 
     // This gets the CSRF header info for this form
     useEffect(() => {
-        ajax(location.origin + "/api/latest/account/login").done(function(response) {
+        ajax(location.origin + "/api/account/login").done(function(response) {
             setHeaderData(response.data)
         }).fail(function(error) {
             console.log(error)

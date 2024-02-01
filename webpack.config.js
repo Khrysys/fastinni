@@ -59,7 +59,12 @@ module.exports = {
                                 "macros",
                                 {}
                             ]
-                        ]
+                        ],
+                        env: {
+                            "production": {
+                                "presets": ["react-optimize"]
+                            }
+                        }
                     }
                 }
             },
