@@ -68,9 +68,14 @@ class User(SQLModel, table=True):
     
 
     @staticmethod
-    def try_login_user(*, tag: str, password: Optional[str] = None, google_id: Optional[str] = None) -> Optional["User"]:
+    def try_login_user(*, tag: Optional[str] = None, email: Optional[str] = None, password: Optional[str] = None, google_id: Optional[str] = None) -> Optional["User"]:
         with Session(engine) as session:
-            statement = select(User).where(User.tag==tag)
+            if tag is not None:
+                statement = select(User).where(User.tag==tag)
+            else:
+                statement = select(User).where(User.email==email)
+
+
             if password is not None:
                 result = session.exec(statement)
                 user: User = result.one()
