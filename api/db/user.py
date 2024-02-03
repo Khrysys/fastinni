@@ -18,16 +18,18 @@ class ViewScope(StrEnum):
     
 
 class User(SQLModel, table=True):
-    id: Optional[int] = Field(primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True, unique=True)
 
     # User information
     display_name: str
-    tag: str
-    email: str
+    tag: str = Field(primary_key=True, unique=True)
+    email: Optional[str] = Field(default=None, unique=True)
+    # We are storing the URL of the profile image, since that allows for Google OAuth to work quite well.
+    picture: str = Field(default='default_profile.jpg')
 
     # Possible login secret info that gets verified
-    google_id: Optional[int]
-    password_hash: Optional[str]
+    google_id: Optional[int] = Field(default=None)
+    password_hash: Optional[str] = Field(default=None)
 
     # Toggles
     is_banned: Optional[bool] = Field(default=False)

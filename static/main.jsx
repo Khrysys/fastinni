@@ -15,7 +15,7 @@ root.render(
 	< StrictMode >
 		<ThemeProvider>
 			<AccountProvider>
-					<App />
+				<App />
 			</AccountProvider>
 		</ThemeProvider>
 	</ StrictMode >

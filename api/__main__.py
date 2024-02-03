@@ -2,7 +2,7 @@
 # This creates the core app, adds the API and StaticFiles, and runs itself via uvicorn.
 # This does not create an NGinx instance or check the NGinx config, that should be done seperately.
 
-# run with `python api`
+# run with `python -m api`
 
 
 
@@ -17,22 +17,14 @@ from asyncio import run
 
 load_dotenv()
 
-# CSRF setup things
-class CsrfSettings(BaseModel):
-  secret_key:str = 'Kaakaww!'
-@CsrfProtect.load_config # type: ignore
-def csrf_settings():
-    return CsrfSettings()
-
 # Rename the app in this file, since it's declared as app in __init__.py
-from api import app as api
+from . import app as api
 
 app = FastAPI(title="Fastinni", docs_url=None, redoc_url=None)
 app.mount('/api', api)
 app.mount('/', StaticFiles(directory='html', html=True))
 
-# Import the exceptions here, since the app has been instantiated.
-import api.exceptions
+
 
 # FastAPI is responsible for all of the actual code, but uvicorn is what makes it web compatible.
 uvicorn_config = Config(
