@@ -43,7 +43,7 @@ export function SignupForm() {
             <input type="text" required={true} maxLength="Tag length cannot be longer than 64 characters." data-val-length-max="64" placeholder="Tag" id="tag" name="tag" value={tag} onChange={e => {setTag(e.target.value);checkTagAvailibility(e.target.value)}} />
             {
                 <div className="alert">
-                <span class="closebtn" onclick={displayAlert(false)}">&times;</span>
+                <span class="closebtn" onclick={displayAlert(false)}>&times;</span>
                 This is an alert box.
             </div>
         }

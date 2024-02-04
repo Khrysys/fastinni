@@ -43,7 +43,7 @@ def cert_gen(
         f = open(ENV_FILE, 'w')
     else:
         f = open(ENV_FILE, 'a')
-    f.write(f'\nSSL_KEYFILE={KEY_FILE}\nSSL_CERTFILE={CERT_FILE}')
+    f.write(f'SSL_KEYFILE={KEY_FILE}\nSSL_CERTFILE={CERT_FILE}\n\n')
     f.close()
 
 if __name__ == '_main__':
