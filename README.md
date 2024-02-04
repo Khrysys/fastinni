@@ -21,7 +21,7 @@ git clone https://github.com/khrysys/fastinni
 cd fastinni
 ```
 
-In order to install Fastinni properly on your machine, you must have Python 3.10 or later and NPM 9 already installed on your machine. NPM versions may or may not work, but this project is tested on Python 3.11 and NPM 9.6.7. 
+In order to install Fastinni properly on your machine, you must have Python 3.10 or later, NPM 9, and PostgresQL 15 already installed on your machine. NPM versions may or may not work, but this project is tested on Python 3.11 and NPM 9.6.7. 
 
 After installing those, install Poetry:
 
@@ -49,7 +49,18 @@ Now that the API dependencies are running, verify you can run the app with the f
 python -m api
 ```
 
-You should see FastAPI initialize to `http://127.0.0.1:8000`. But you'll discover that signup and login through third party providers like Google are not possible. Let's fix this. 
-
 ## Setting up the .env file
 
+For development, there is a `utils/gen_env_file.py` that automatically creates secure secrets for development. ***This does require the dev dependency group.***
+
+Run the script.
+
+```sh
+python utils/gen_env_file.py
+```
+
+This will set up a basic .env file for you.
+
+You should see FastAPI initialize to `http://127.0.0.1:8000`. But you'll discover that signup and login through third party providers like Google are not possible. Let's fix this. 
+
+## Setting up Third Party Login
