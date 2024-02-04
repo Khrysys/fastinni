@@ -1,13 +1,18 @@
+from os import urandom
 from fastapi import FastAPI
+from fastapi_csrf_protect import CsrfProtect
 from pydantic import BaseModel
+
+# The DB should be imported first
+from .db import *
+
 
 # CSRF setup things
 class CsrfSettings(BaseModel):
-  secret_key:str = 'Kaakaww!'
+  secret_key:str = getenv('CSRF_SECRET', urandom(128).hex())
 @CsrfProtect.load_config # type: ignore
 def csrf_settings():
     return CsrfSettings()
-
 
 app = FastAPI(
     debug=False,
@@ -20,11 +25,9 @@ app = FastAPI(
 )
 
 from . import exceptions
-
 from .account import app as account
-from .security import app as security
-from .db import *
 from .oauth import app as oauth
+from .security import app as security
 
 app.include_router(account)
 app.include_router(security)

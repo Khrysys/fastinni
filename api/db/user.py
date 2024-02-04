@@ -45,7 +45,7 @@ class User(SQLModel, table=True):
         with Session(engine) as session:
             statement = select(User).where(User.tag==tag).where(User.is_banned==False)
             result = session.exec(statement)
-            return len(result.all()) is 0
+            return len(result.all()) == 0
 
 
     @property

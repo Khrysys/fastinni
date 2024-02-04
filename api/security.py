@@ -25,7 +25,7 @@ class OWaspValidationException(Exception):
 def validate_email_address(email: str) -> None:
 	# Check to make sure email has two parts separated by an @
 	parts = email.split('@')
-	if len(parts) is not 2:
+	if len(parts) != 2:
 		raise OWaspValidationException(f"Provided email {email} has {len(parts)} sections (required 2)")
 	
 	# Ensure email has no dangerous characters

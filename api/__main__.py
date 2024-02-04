@@ -9,8 +9,6 @@
 from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from fastapi_csrf_protect import CsrfProtect
-from pydantic import BaseModel
 from uvicorn import Server, Config
 from os import getenv
 from asyncio import run

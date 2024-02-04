@@ -83,10 +83,10 @@ def google_login_callback(code: str, request: Request):
     if user is None:
         with Session(engine) as session:
             # We now know this is a new login to this site
-            user = User(display_name=users_name, tag=users_email, email=users_email, google_id=unique_id)
+            user = User(display_name=users_name, tag=users_email, email=users_email, picture=picture, google_id=unique_id)
             session.add(user)
             session.commit()
 
     response = RedirectResponse(request.url.hostname) # type: ignore
-    response.set_cookie(getenv("LOGIN_JWT_TOKEN_NAME", 'login'), user.generate_login_jwt())
+    response.set_cookie('login_token', user.generate_login_jwt())
     return response
