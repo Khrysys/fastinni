@@ -17,3 +17,6 @@ selfsigned.crt
 # Database Migration files (not all of them, due to modifications)
 migrations/versions/
 migrations/README
+
+# Editor directories
+.vscode/

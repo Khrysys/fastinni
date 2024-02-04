@@ -1,14 +1,18 @@
 from datetime import datetime, timedelta
+from functools import lru_cache
+from json import dumps
+from os import getenv
+
 from fastapi import APIRouter, Request
 from fastapi.responses import JSONResponse, RedirectResponse
 from oauthlib.oauth2 import WebApplicationClient
-from os import getenv
-from requests import get
-from functools import lru_cache
-from json import dumps
 from requests import get, post
-from sqlmodel import SQLModel, Session, select
-from ...db import User, engine
+from sqlmodel import Session, SQLModel, select
+
+from ..security import OWaspValidationException, validate_email_address
+
+from .. import User, engine
+
 
 @lru_cache
 def get_google_provider_cfg():
@@ -66,16 +70,23 @@ def google_login_callback(code: str, request: Request):
     else:
         return "User email not available or not verified by Google.", 400
     
-    # Find if the user already exists, and if not, add a new user
-    with Session(engine) as session:
-        statement = select(User).where(User.email==users_email).where(User.google_id==unique_id)
-        results = session.exec(statement)
+    # Validate the user's email against OWasp requirements, just in case.
+    # This doesn't return anything since this will throw an OWaspValidationException if it fails
+    # Google has stricter requirements than we do, but this is probably important to keep in here.
+    
+    # The error handler is in api/exceptions.py
+    validate_email_address(users_email)
+        
 
-        user = results.one_or_none()
-        if user is not None:
-            
-            jwt = user.get_login_jwt
+    user = User.try_login_user(email=users_email, google_id=unique_id)
 
+    if user is None:
+        with Session(engine) as session:
+            # We now know this is a new login to this site
+            user = User(display_name=users_name, tag=users_email, email=users_email, picture=picture, google_id=unique_id)
+            session.add(user)
+            session.commit()
 
-
-            return RedirectResponse('../../../../?login=')
+    response = RedirectResponse(request.url.hostname) # type: ignore
+    response.set_cookie('login_token', user.generate_login_jwt())
+    return response
