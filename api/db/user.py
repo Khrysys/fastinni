@@ -6,7 +6,7 @@ from sqlmodel import Field, SQLModel, Session, select
 
 from passlib.context import CryptContext
 
-from . import engine
+from ..oauth import engine
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
