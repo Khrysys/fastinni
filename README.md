@@ -54,7 +54,35 @@ Run the script.
 python utils/gen_env_file.py
 ```
 
-This will set up a basic .env file for you.
+This will set up a basic .env file for you. Note that the default values are as shown: 
+
+```env
+
+SSL_KEYFILE=private.key
+SSL_CERTFILE=selfsigned.crt
+CSRF_SECRET=837ece9526a590792248b2d5cdd2ffb4382eac29539bec12a609cfe559a3e9af
+LOGIN_SECRET=2dc2adab8102922bccba09d0da0dbc913655b3b76bc83109f2aeeca3ccf608a3\HOST=127.0.0.1
+PORT=8000
+DB_URL=postgresql+psycopg://postgres:postgres@127.0.0.1:5432/db-fastinni
+```
+
+## Transpiling The React scripts
+
+Fastinni is not just the API, it also has a React frontend. This is where NPM comes in. Install the dependencies with the following command:
+
+```sh
+npm install
+```
+
+From here, there are three compilation scripts, `pack`, `produce`, and `produce-win`. The one we'll be using is `pack`
+
+```sh
+npm run pack
+```
+
+You should now see a directory called `html` that contains the transpiled React code.
+
+## Running the app
 
 Now that the API dependencies are running, verify you can run the app with the following command:
 

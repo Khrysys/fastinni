@@ -3,8 +3,10 @@ from fastapi import FastAPI
 from fastapi_csrf_protect import CsrfProtect
 from pydantic import BaseModel
 
+print('here', flush=True)
 # The DB should be imported first
 from .db import *
+
 
 
 # CSRF setup things

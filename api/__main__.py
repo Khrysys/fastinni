@@ -13,6 +13,7 @@ from uvicorn import Server, Config
 from os import getenv
 from asyncio import run
 
+
 load_dotenv()
 
 # Rename the app in this file, since it's declared as app in __init__.py
