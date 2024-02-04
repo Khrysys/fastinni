@@ -43,11 +43,6 @@ poetry install
 poetry install --with=dev
 ```
 
-Now that the API dependencies are running, verify you can run the app with the following command:
-
-```sh
-python -m api
-```
 
 ## Setting up the .env file
 
@@ -60,6 +55,12 @@ python utils/gen_env_file.py
 ```
 
 This will set up a basic .env file for you.
+
+Now that the API dependencies are running, verify you can run the app with the following command:
+
+```sh
+python -m api
+```
 
 You should see FastAPI initialize to `http://127.0.0.1:8000`. But you'll discover that signup and login through third party providers like Google are not possible. Let's fix this. 
 
