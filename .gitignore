@@ -1,6 +1,7 @@
 # Environment files
 *.env
 deploy.sh
+.DS_Store
 
 # Package directories
 node_modules/
