@@ -11,7 +11,7 @@ from sqlmodel import Session, SQLModel, select
 
 from ..security import OWaspValidationException, validate_email_address
 
-from .. import User, engine
+from ..db import User, engine
 
 
 @lru_cache

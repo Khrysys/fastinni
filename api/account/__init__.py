@@ -3,7 +3,7 @@ from typing import Annotated, Any, Optional
 from fastapi import APIRouter, Cookie, Request
 from jwt import decode
 
-from .. import User
+from ..db import User
 
 app = APIRouter(prefix='/account', tags=['Account'])
 
