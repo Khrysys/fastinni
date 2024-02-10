@@ -3,11 +3,13 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const path = require('path');
 
 const devMode = process.env.NODE_ENV != 'production';
-console.log(process.env.NODE_ENV)
-console.log(devMode)
 
 module.exports = {
-    entry: './static/main.jsx',
+    entry: {
+        index: './static/main.jsx',
+        admin: './static/main.jsx'
+    },
+
     mode: devMode ? "development" : "production",
     stats: {
         errorDetails: true
@@ -25,7 +27,15 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             title: 'Fastinni', 
+            filename: 'index.html',
             favicon: "./static/favicon.ico",
+            chunks: ['index', 'vendor']
+        }),
+        new HtmlWebpackPlugin({
+            title: 'Fastinni Admin',
+            filename: 'admin.html',
+            favicon: './static/favicon.ico',
+            chunks: ['admin', 'vendor']
         }),
         new MiniCssExtractPlugin({})
     ],
