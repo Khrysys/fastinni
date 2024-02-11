@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { isSigningUp, SignupProvider } from "../contexts/AccountContext";
+import { isSigningUp, SignupProvider } from "../../general/AccountContext";
 import "../scss/login.scss";
 import { LoginForm } from "./account/LoginForm";
 import { SignupForm } from "./account/SignupForm";

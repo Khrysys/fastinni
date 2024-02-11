@@ -14,12 +14,12 @@ from ..security import OWaspValidationException, validate_email_address
 from ..db import User, engine
 
 
+client = WebApplicationClient(getenv("GOOGLE_CLIENT_ID"))
+app = APIRouter(prefix="/google")
+
 @lru_cache
 def get_google_provider_cfg():
     return get("https://accounts.google.com/.well-known/openid-configuration").json()
-
-client = WebApplicationClient(getenv("GOOGLE_CLIENT_ID"))
-app = APIRouter(prefix="/google")
 
 @app.get("/")
 def redirect_to_google_login(request: Request):
@@ -73,10 +73,8 @@ def google_login_callback(code: str, request: Request):
     # Validate the user's email against OWasp requirements, just in case.
     # This doesn't return anything since this will throw an OWaspValidationException if it fails
     # Google has stricter requirements than we do, but this is probably important to keep in here.
-    
     # The error handler is in api/exceptions.py
     validate_email_address(users_email)
-        
 
     user = User.try_login_user(email=users_email, google_id=unique_id)
 

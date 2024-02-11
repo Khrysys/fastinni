@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import Form from "../../blocks/Form";
+import Form from "../../../blocks/Form";
 import ThirdParty from "./ThirdParty";
 import { ajax } from "jquery";
 

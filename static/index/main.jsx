@@ -1,7 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { AccountProvider } from "./contexts/AccountContext";
-import { ThemeProvider } from "./contexts/ThemeContext";
+import { AccountProvider } from "../general/AccountContext";
+import { ThemeProvider } from "../general/ThemeContext";
 import App from "./components/App";
 import "./scss/main.scss";
 

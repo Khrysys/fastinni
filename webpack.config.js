@@ -6,8 +6,8 @@ const devMode = process.env.NODE_ENV != 'production';
 
 module.exports = {
     entry: {
-        index: './static/main.jsx',
-        admin: './static/admin.jsx'
+        index: './static/index/main.jsx',
+        admin: './static/admin/main.jsx'
     },
 
     mode: devMode ? "development" : "production",
@@ -72,7 +72,7 @@ module.exports = {
                         ],
                         env: {
                             "production": {
-                                "presets": ["react-optimize"]
+                                
                             }
                         }
                     }
