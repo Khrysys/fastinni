@@ -7,7 +7,7 @@ const devMode = process.env.NODE_ENV != 'production';
 module.exports = {
     entry: {
         index: './static/main.jsx',
-        admin: './static/main.jsx'
+        admin: './static/admin.jsx'
     },
 
     mode: devMode ? "development" : "production",
@@ -33,7 +33,7 @@ module.exports = {
         }),
         new HtmlWebpackPlugin({
             title: 'Fastinni Admin',
-            filename: 'admin.html',
+            filename: 'admin/index.html',
             favicon: './static/favicon.ico',
             chunks: ['admin', 'vendor']
         }),

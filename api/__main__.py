@@ -6,7 +6,6 @@
 
 
 
-from dotenv import load_dotenv
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from uvicorn import Server, Config
@@ -14,20 +13,9 @@ from os import getenv
 from asyncio import run
 
 
-load_dotenv()
-
-# Rename the app in this file, since it's declared as app in __init__.py
-from . import app as api
-
-app = FastAPI(title="Fastinni", docs_url=None, redoc_url=None)
-app.mount('/api', api)
-app.mount('/', StaticFiles(directory='html', html=True))
-
-
-
 # FastAPI is responsible for all of the actual code, but uvicorn is what makes it web compatible.
 uvicorn_config = Config(
-    app                       = app,
+    app                       = "api:app",
     host                      = getenv("HOST", "127.0.0.1"),
     port                      = int(getenv("PORT", 8000)),
     reload                    = bool(getenv("RELOAD", True)),
