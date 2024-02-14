@@ -2,7 +2,7 @@ import { FaBars } from "react-icons/fa6"
 import { useContext, useState } from "react"
 import { ActiveContainerTab, ContainerTabTypes } from "../contexts/ActiveContainerTabContext"
 
-import "../scss/header.scss"
+import "../../general/scss/header.scss"
 import { AccountContext } from "../../general/AccountContext"
 
 export function Header() {

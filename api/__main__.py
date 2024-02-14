@@ -4,10 +4,6 @@
 
 # run with `python -m api`
 
-
-
-from fastapi import FastAPI
-from fastapi.staticfiles import StaticFiles
 from uvicorn import Server, Config
 from os import getenv
 from asyncio import run

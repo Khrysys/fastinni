@@ -9,7 +9,8 @@ from oauthlib.oauth2 import WebApplicationClient
 from requests import get, post
 from sqlmodel import Session, SQLModel, select
 
-from ..security import OWaspValidationException, validate_email_address
+from ..security import validate_email_address
+from ..exceptions import OWaspValidationException
 
 from ..db import User, engine
 
@@ -64,18 +65,16 @@ def google_login_callback(code: str, request: Request):
     
     if userinfo_response.json().get("email_verified"):
         unique_id = userinfo_response.json()["sub"]
-        users_email = userinfo_response.json()["email"]
+        # Validate the user's email against OWasp requirements, just in case.
+        # This doesn't return anything since this will throw an OWaspValidationException if it fails
+        # Google has stricter requirements than we do, but this is probably important to keep in here.
+        # The error handler is in api/exceptions.py
+        users_email = validate_email_address(userinfo_response.json()["email"])
         picture = userinfo_response.json()["picture"]
         users_name = userinfo_response.json()["given_name"]
     else:
         return "User email not available or not verified by Google.", 400
     
-    # Validate the user's email against OWasp requirements, just in case.
-    # This doesn't return anything since this will throw an OWaspValidationException if it fails
-    # Google has stricter requirements than we do, but this is probably important to keep in here.
-    # The error handler is in api/exceptions.py
-    validate_email_address(users_email)
-
     user = User.try_login_user(email=users_email, google_id=unique_id)
 
     if user is None:
@@ -86,5 +85,5 @@ def google_login_callback(code: str, request: Request):
             session.commit()
 
     response = RedirectResponse(request.url.hostname) # type: ignore
-    response.set_cookie('login_token', user.generate_login_jwt())
+    response.set_cookie('login_jwt', user.generate_login_jwt())
     return response

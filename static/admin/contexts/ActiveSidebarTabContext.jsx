@@ -1,32 +1,28 @@
 export const ActiveSidebarTab = createContext();
 
 export const SidebarTabTypes = {
-    Admin: "admin"
+    Dashboard: "dashboard",
+    UserCounts: "usercounts",
+    Database: "database"
 }
 
 export function ActiveSidebarTabProvider(props) {
-    const [activeTab, setActiveTab] = useState(SidebarTabTypes.Blog);
+    const [activeTab, setActiveTab] = useState(SidebarTabTypes.Dashboard);
 
     useEffect(() => {
         var hash = window.location.hash;
         switch(hash) {
-            case "#blog":
-                setTab(SidebarTabTypes.Blog)
+            case "#dashboard":
+                setTab(SidebarTabTypes.Dashboard)
                 break
-            case "#profile":
-                setTab(SidebarTabTypes.Profile)
+            case "#usercounts":
+                setTab(SidebarTabTypes.UserCounts)
                 break
-            case "#contact":
-                setTab(SidebarTabTypes.Contact)
-                break
-            case "#friends":
-                setTab(SidebarTabTypes.Friends)
-                break
-            case "#login":
-                setTab(SidebarTabTypes.Login)
+            case "#database":
+                setTab(SidebarTabTypes.Database)
                 break
             default:
-                setTab(SidebarTabTypes.Blog)
+                setTab(SidebarTabTypes.Dashboard)
         }
     }, [])
 
@@ -35,7 +31,7 @@ export function ActiveSidebarTabProvider(props) {
         setActiveTab(val)
     }
 
-    return <ActiveContainerTab.Provider value={{activeTab, setTab }}>
+    return <ActiveSidebarTab.Provider value={{activeTab, setTab }}>
         {props.children}
-    </ActiveContainerTab.Provider>
+    </ActiveSidebarTab.Provider>
 }

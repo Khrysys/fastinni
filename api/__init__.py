@@ -4,19 +4,7 @@ from fastapi_csrf_protect import CsrfProtect
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
-
-# The DB should be imported first
-from . import db
-
 load_dotenv()
-
-
-# CSRF setup things
-class CsrfSettings(BaseModel):
-  secret_key:str = getenv('CSRF_SECRET', urandom(128).hex())
-@CsrfProtect.load_config # type: ignore
-def csrf_settings():
-    return CsrfSettings()
 
 api = FastAPI(
     debug=False,
@@ -28,6 +16,17 @@ api = FastAPI(
     redoc_url='/docs'
 )
 
+# CSRF setup things
+class CsrfSettings(BaseModel):
+  secret_key:str = getenv('CSRF_SECRET', urandom(128).hex())
+  cookie_key:str = 'csrf'
+  httponly:bool = False
+@CsrfProtect.load_config # type: ignore
+def csrf_settings():
+    return CsrfSettings()
+
+
+from . import db
 from . import exceptions
 from .account import app as account
 from .oauth import app as oauth
@@ -37,9 +36,7 @@ api.include_router(account)
 api.include_router(security)
 api.include_router(oauth)
 
-# Import the exceptions here, since the app has been instantiated.
-from . import exceptions
-
 app = FastAPI(title="Fastinni", docs_url=None, redoc_url=None)
 app.mount('/api', api)
 app.mount('/', StaticFiles(directory='html', html=True))
+

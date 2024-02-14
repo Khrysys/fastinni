@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import Form from "../../../blocks/Form";
 import ThirdParty from "./ThirdParty";
 import { ajax } from "jquery";
+import { getCookie } from "../../../general/cookies";
 
 export function LoginForm() {
     const [tag, setTag] = useState("")
@@ -15,7 +16,7 @@ export function LoginForm() {
             {
                 method: "POST",
                 headers: {
-                    X_FASTINNI_CSRF: headerData
+                    "X-CSRF-Token": getCookie("csrf")
                 },
                 data: {
                     'tag': tag,

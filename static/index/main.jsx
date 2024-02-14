@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 import { AccountProvider } from "../general/AccountContext";
 import { ThemeProvider } from "../general/ThemeContext";
 import App from "./components/App";
-import "./scss/main.scss";
+import "../general/scss/main.scss";
 
 
 const rootElement = document.createElement("div");

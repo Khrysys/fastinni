@@ -1,4 +1,4 @@
-import "../scss/loading.scss";
+import "../../general/scss/loading.scss";
 
 export function LoadingContainer() {
     return <div className="loading">

@@ -1,10 +1,14 @@
 from enum import StrEnum
 from os import getenv
-from typing import Optional
+from typing import Optional, Annotated, Union
+from fastapi import Request
+from fastapi.responses import JSONResponse, RedirectResponse
 from jwt import encode
 from sqlmodel import Field, SQLModel, Session, select
 
 from passlib.context import CryptContext
+
+from api.exceptions import LoginException
 
 from . import engine
 
@@ -33,6 +37,7 @@ class User(SQLModel, table=True):
 
     # Toggles
     is_banned: Optional[bool] = Field(default=False)
+    is_admin: Optional[bool] = Field(default=False)
 
     # View Modes
     profile_view: Optional[ViewScope] = Field(default=ViewScope.public)
@@ -65,6 +70,7 @@ class User(SQLModel, table=True):
             "tag": self.tag, 
             "password": self.password, 
             "google_id": self.google_id,
+            "admin": self.is_admin,
             "args": kwargs
         }, getenv("LOGIN_SECRET")) # type: ignore
     
@@ -91,3 +97,19 @@ class User(SQLModel, table=True):
             
             else:
                 return None
+            
+    @staticmethod
+    def generate_login_response(request: Request, *, tag: Optional[str] = None, email: Optional[str] = None, password: Optional[str] = None, google_id: Optional[str] = None) -> RedirectResponse:
+        user = User.try_login_user(tag=tag, email=email, password=password, google_id=google_id)
+
+        # We can't proceed further if the login details are incorrect.
+        if user is None:
+            raise LoginException(message="Could not login user (credentials not found)", status_code=403)
+        
+        if user.is_admin:
+            response = RedirectResponse(request.base_url.hostname + '/admin') # type: ignore
+        else:
+            response = RedirectResponse(request.base_url.hostname) # type: ignore
+            
+        response.set_cookie('login_jwt', user.generate_login_jwt())
+        return response
