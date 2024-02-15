@@ -86,7 +86,11 @@ class User(SQLModel, table=True):
 
             if password is not None:
                 result = session.exec(statement)
-                user: User = result.one()
+                user = result.one_or_none() # type: ignore
+                
+                if user is None:
+                    raise LoginException("User Not Found", status_code=401)
+                
                 return user if user.check_password(password) else None
             
             elif google_id is not None:
@@ -113,3 +117,4 @@ class User(SQLModel, table=True):
             
         response.set_cookie('login_jwt', user.generate_login_jwt())
         return response
+    

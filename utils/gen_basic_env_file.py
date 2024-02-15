@@ -1,6 +1,7 @@
 from os import path
 from create_certs import cert_gen
 from create_secrets import gen_secrets
+from create_admin import create_admin
 
 def gen_env_file(*, file='.env'):
     if path.exists(".env"):
@@ -12,6 +13,7 @@ def gen_env_file(*, file='.env'):
 
     cert_gen(ENV_FILE=file)
     gen_secrets(file)
+    create_admin(ENV_FILE=file)
 
 
 if __name__ == '__main__':

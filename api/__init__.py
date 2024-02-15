@@ -1,6 +1,4 @@
-from os import getenv, urandom
 from fastapi import FastAPI
-from fastapi_csrf_protect import CsrfProtect
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from fastapi.staticfiles import StaticFiles
@@ -15,16 +13,6 @@ api = FastAPI(
     docs_url=None, 
     redoc_url='/docs'
 )
-
-# CSRF setup things
-class CsrfSettings(BaseModel):
-  secret_key:str = getenv('CSRF_SECRET', urandom(128).hex())
-  cookie_key:str = 'csrf'
-  httponly:bool = False
-@CsrfProtect.load_config # type: ignore
-def csrf_settings():
-    return CsrfSettings()
-
 
 from . import db
 from . import exceptions

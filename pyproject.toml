@@ -10,7 +10,6 @@ python = "^3.10"
 alembic = "^1.13.1"
 datetime = "^5.4"
 fastapi = "^0.109.2"
-fastapi-csrf-protect = "^0.3.3"
 oauthlib = "^3.2.2"
 python-dotenv = "^1.0.0"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}

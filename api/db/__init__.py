@@ -8,3 +8,4 @@ engine = create_engine(getenv("DB_URL", 'postgresql+psycopg://postgres:postgres@
 from .user import User
 
 SQLModel.metadata.create_all(engine)
+

@@ -1,22 +1,44 @@
-from os import getenv
+from os import getenv, urandom
+from secrets import choice
 from string import ascii_lowercase, digits
-from fastapi import APIRouter, Depends
+from typing import Annotated
+from fastapi import APIRouter, Cookie, Header
 from fastapi.responses import JSONResponse
-from fastapi_csrf_protect import CsrfProtect
+from hashlib import sha256
 
-from .exceptions import OWaspValidationException
+from jwt import PyJWTError, decode, encode
 
+from .exceptions import CSRFValidationException, OWaspValidationException
+
+
+CSRF_TOKEN = getenv("CSRF_TOKEN", urandom(64).hex())
+ALGORITHMS = ['HS256']
 
 app = APIRouter(prefix='/security', tags=['Security'])
 
 @app.get('/csrf')
-async def get_csrf_token(csrf_protect:CsrfProtect = Depends()):
+async def get_csrf_token():
 	response = JSONResponse(status_code=200, content={'csrf_token':'cookie'})
-	(_, token) = csrf_protect.generate_csrf_tokens()
-	csrf_protect.set_csrf_cookie(token, response)
+	token = sha256(urandom(64)).hexdigest()
+	data = encode({"token": token}, CSRF_TOKEN, choice(ALGORITHMS))
+	response.set_cookie('csrf', data)
 	return response
 
+async def check_csrf_token(data: Annotated[str, Header(alias='X-CSRF-Token')], check: Annotated[str, Cookie(alias='csrf')]) -> bool:
+	try:
+		token = decode(data, CSRF_TOKEN, ALGORITHMS).get('token')
+		check_token = decode(check, CSRF_TOKEN, ALGORITHMS).get('token')
+		if token is None or check_token is None:
+			raise CSRFValidationException("Tokens must exist")
+		
+		if token != check_token:
+			raise CSRFValidationException("Tokens do not match")
 
+		return True
+	except PyJWTError:
+		raise CSRFValidationException("Invalid Signature")
+		
+		
 
 # Validates an email according to OWasp specifications.
 # Throws OwaspValidationException when email is invalid.
@@ -50,4 +72,4 @@ def validate_email_address(email: str) -> str:
 
 	return email
 
-	
+	3
