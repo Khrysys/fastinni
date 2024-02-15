@@ -9,6 +9,8 @@ app = APIRouter(prefix='/account', tags=['Account'])
 
 from .login import app as login
 app.include_router(login)
+from .signup import app as signup
+app.include_router(signup)
 
 async def try_login_token(login_token: Annotated[str, Cookie()]) -> Optional[User]:
     try:

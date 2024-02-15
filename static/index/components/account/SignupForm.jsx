@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Form from "../../../blocks/Form";
 import ThirdParty from "./ThirdParty";
 import { ajax } from "jquery";
+import { getCookie } from "../../../general/cookies";
 
 export function SignupForm() {
     const [tag, setTag] = useState("")
+    const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [verify_password, setVerificationPassword] =useState("")
     const [remember, setRemember] = useState(true)
@@ -12,20 +14,48 @@ export function SignupForm() {
     const [tagAlert, setTagAlert] = useState(false);
     
     function onSubmit() {
+        {
+            ajax(location.origin + "/api/account/signup",
+            {
+                method: 'POST',
+                headers: {
+                    "X-CSRF-Token": getCookie("csrf")
+                },
+                data: {
+                    tag: tag,
+                    username: username,
+                    password: password
+                }
+            }
+            ).done(function(response) {
+                setHeaderData(response.data)
+            }).fail(function(error) {
+                console.log(error)
+            })
+        }
 
     }
 
     function checkTagAvailibility(val) {
-        ajax(location.origin + "/api/account/tag").done(function(response) {
+        if(val == null)
+            return
+        ajax(location.origin + "/api/account/signup/tag", 
+            {
+                data: {
+                    tag: val
+                }
+            }
+        ).done(function(response) {
             
-        }.fail(function(error) {
-
-        }))
+        }).fail(function(error) {
+            console.log(error)
+        })
     }
 
     // This gets the CSRF header info for this form
     useEffect(() => {
-        ajax(location.origin + "/api/account/signup").done(function(response) {
+        ajax(location.origin + "/api/account/signup"
+        ).done(function(response) {
             setHeaderData(response.data)
         }).fail(function(error) {
             console.log(error)
@@ -39,14 +69,15 @@ export function SignupForm() {
             </a>
         </header>
         <Form onSubmit={() => onSubmit()}>
-            <input type="text" required={true} maxLength="Username length cannot be longer than 64 characters." data-val-length-max="64" placeholder="Username" id="username" name="username" value={username} onChange={e => setTag(e.target.value)} />
+            <input type="text" required={true} maxLength="Username length cannot be longer than 64 characters." data-val-length-max="64" placeholder="Username" id="username" name="username" value={username} onChange={e => setUsername(e.target.value)} />
             <input type="text" required={true} maxLength="Tag length cannot be longer than 64 characters." data-val-length-max="64" placeholder="Tag" id="tag" name="tag" value={tag} onChange={e => {setTag(e.target.value);checkTagAvailibility(e.target.value)}} />
             {
+                tagAlert ?
                 <div className="alert">
-                <span class="closebtn" onclick={displayAlert(false)}>&times;</span>
-                This is an alert box.
-            </div>
-        }
+                    <span class="closebtn" onclick={displayAlert(false)}>&times;</span>
+                    This is an alert box.
+                </div> : <></>
+            }
 
             <input type="password" required placeholder="Password" id="password" name="password" value={password} onChange={e => setPassword(e.target.value)}/>
             <input type="password" required placeholder="Verify Password" id="verify_password" name="verify_password" value={verify_password} onChange={e => setVerificationPassword(e.target.value)}/>

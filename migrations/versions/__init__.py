@@ -1,0 +1,1 @@
+# This file is to remove the FileNotFoundError that appears if the versions directory is not created before Alembic runs the first time.
