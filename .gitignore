@@ -15,11 +15,9 @@ __pycache__/
 private.key
 selfsigned.crt
 
-# Database Migration files (not all of them, due to modifications)
-migrations/versions/*
-# We want to keep this so the directory exists.
-!migrations/versions/__init__.py
-migrations/README
+# Database Migration files
+migrations/
+alembic.ini
 
 # Editor directories
 .vscode/

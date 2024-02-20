@@ -22,7 +22,7 @@ async def attempt_account_signup(
     tag: Annotated[str, Form()], password: Annotated[str, Form()], 
     request: Request, 
     csrf: bool = Depends(check_csrf_token), 
-    session: AsyncSession = Depends(db.get_session)
+    session: AsyncSession = Depends(db)
 ):
     user = None
     try:
@@ -38,7 +38,7 @@ async def attempt_account_signup(
     await session.commit()
     
 @app.get('/tag')
-async def check_if_tag_exists(tag: str, session: AsyncSession = Depends(db.get_session)):
+async def check_if_tag_exists(tag: str, session: AsyncSession = Depends(db)):
     if await User.is_tag_available(tag, session):
         return Response(status_code=200)
     else:

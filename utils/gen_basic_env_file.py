@@ -4,7 +4,7 @@ from create_admin import create_admin
 
 def gen_env_file(*, file:str='.env'):
     f = open(file, 'w')
-    f.write(f'HOST=127.0.0.1\nPORT=8000\nDB_URL=postgresql+psycopg://postgres:postgres@127.0.0.1:5432/db-fastinni\n\nGOOGLE_CLIENT_ID=REPLACE_THIS\nGOOGLE_CLIENT_SECRET=REPLACE_THIS\n\n')
+    f.write(f'EXTERNAL_HOST=127.0.0.1\nEXTERNAL_PORT=8000\nDB_URL=postgresql+psycopg://postgres:postgres@127.0.0.1:5432/db-fastinni\n\nGOOGLE_CLIENT_ID=REPLACE_THIS\nGOOGLE_CLIENT_SECRET=REPLACE_THIS\n\n')
     f.close()
 
     cert_gen(ENV_FILE=file)

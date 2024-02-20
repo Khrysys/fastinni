@@ -21,7 +21,7 @@ git clone https://github.com/khrysys/fastinni
 cd fastinni
 ```
 
-In order to install Fastinni properly on your machine, you must have Python 3.10 or later, NPM 9, and PostgresQL 15 already installed on your machine. NPM versions may or may not work, but this project is tested on Python 3.11 and NPM 9.6.7. 
+In order to install Fastinni properly on your machine, you must have Python 3.10 or later, NPM 9, and PostgresQL 15 already installed on your machine. Other NPM and Postgres versions may or may not work, but this project is tested on Python 3.11 and NPM 9.6.7. 
 
 After installing those, install Poetry:
 
@@ -36,6 +36,13 @@ poetry shell
 poetry install
 ```
 
+You may need to directly run it as a module depending on your PATH.
+
+```sh
+python -m poetry shell
+python -m poetry install
+```
+
 ***NOTE: PyOpenSSL can be installed as the dev dependency group. This is required to test OAuth locally by creating self-signed SSL certificates, and is not a requirement for production, since in production you are expected to provide properly signed certs. It can certainly be installed, but why?***
 
 ```sh
@@ -46,7 +53,7 @@ poetry install --with=dev
 
 ## Setting up the .env file
 
-For development, there is a `utils/gen_env_file.py` that automatically creates secure secrets for development. ***This does require the dev dependency group.***
+For development, there is a `utils/gen_env_file.py` that automatically creates secure secrets for development. ***This does require the dev dependency group to create the SSL certifications.***
 
 Run the script.
 
@@ -57,9 +64,8 @@ python utils/gen_basic_env_file.py
 This will set up a basic .env file for you. Note that the default values are as shown: 
 
 ```env
-
-HOST=127.0.0.1
-PORT=8000
+EXTERNAL_HOST=127.0.0.1
+EXTERNAL_PORT=8000
 DB_URL=postgresql+psycopg://postgres:postgres@127.0.0.1:5432/db-fastinni
 
 GOOGLE_CLIENT_ID=REPLACE_THIS
@@ -76,7 +82,7 @@ You can also run `utils/set_up_env.py` and follow the steps to fully customize y
 
 ## Transpiling The React scripts
 
-Fastinni is not just the API, it also has a React frontend. This is where NPM comes in. Install the dependencies with the following command:
+Fastinni is not just the API, it also has a React frontend. This is where NPM is involved. Install the dependencies with the following command:
 
 ```sh
 npm i
@@ -98,21 +104,21 @@ Now that the API dependencies are running, verify you can run the app with the f
 python -m api
 ```
 
-You should see Fastinni's API initialize to `https://127.0.0.1:8000`. But you'll discover that signup and login through third party providers like Google are not possible. Let's fix this. 
+You should see Fastinni's API initialize to `https://127.0.0.1:8000`, and you can navigate to the webpage and scroll through it. But you'll discover that signup and login through third party providers like Google are not possible. Let's fix this. 
 
 ## Setting up Third Party Login
 
-For this, you will need OAuth credentials from whichever providers you want. We'll use Google, but there are other branches that have GitHub, Discord, Twitter, and Steam endpoints. Setting up those credentials is outside the scope of this article. There are many good tutorials on the internet for doing so. 
+For this, you will need OAuth credentials from whichever providers you want. We'll use Google for now. Setting up those credentials is outside the scope of this article. There are many good tutorials on the internet for doing so. 
 
 Once you have the ID and the Secret for your client, simply replace those values inside of your `.env` file.
 
 ```env
 # Here
-GOOGLE_CLIENT_ID=REPLACE_THIS
-GOOGLE_CLIENT_SECRET=REPLACE_THIS
+GOOGLE_CLIENT_ID=<your.client.id>
+GOOGLE_CLIENT_SECRET=<your.client.secret>
 ```
 
-Now when running the app and navigating to `https://127.0.0.1:8000`, you should be able to click login and then click the Google icon at the bottom of the page. If you properly copied the client ID and secret, it should allow for you to sign in. 
+Now when running the app and navigating to `https://127.0.0.1:8000`, you should be able to click login and then click the Google icon at the bottom of the page. If you properly copied the client ID and secret, it should allow for you to sign in. If not, follow the steps on the error message to finish setting up OAuth.
 
 ## Initializing Alembic
 

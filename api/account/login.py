@@ -20,6 +20,6 @@ async def attempt_account_login(
     password: Annotated[str, Form()], 
     request: Request, 
     csrf:bool= Depends(check_csrf_token),
-    session: AsyncSession = Depends(db.get_session)
+    session: AsyncSession = Depends(db)
 ): # type: ignore
     return User.generate_login_response(request, tag=tag, password=password, session=session)

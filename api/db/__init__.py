@@ -20,16 +20,20 @@ class SQLModelAlembic():
     
     def __init__(self, db_url: str):
         self._engine = AsyncEngine(create_engine(db_url, echo=True, future=True))
+        self._sessionmaker = sessionmaker(
+            bind=self._engine, class_=AsyncSession, expire_on_commit=False # type: ignore
+        )
     
     async def init(self):
         async with self._engine.begin() as conn:
             await conn.run_sync(SQLModel.metadata.create_all)
             
+    async def __call__(self):
+        return self.get_session()
+        
+            
     async def get_session(self) -> AsyncSession: # type: ignore
-        async_session = sessionmaker(
-            self._engine, class_=AsyncSession, expire_on_commit=False # type: ignore
-        )
-        async with async_session() as session: # type: ignore
+        async with self._sessionmaker() as session: # type: ignore
             yield session # type: ignore
        
     @staticmethod     
