@@ -6,7 +6,6 @@
 
 from uvicorn import Server, Config
 from os import getenv
-from asyncio import run
 
 
 # FastAPI is responsible for all of the actual code, but uvicorn is what makes it web compatible.
@@ -25,6 +24,7 @@ uvicorn_server = Server(uvicorn_config)
 
 # --- ONLY HAVE ONE OF THESE OPTIONS OTHERWISE THINGS WILL PROBABLY BREAK. maybe. idk
 # Run linearly
-#uvicorn_server.run()
+# uvicorn_server.run()
 # Run asynchronously
+from asyncio import run
 run(uvicorn_server.serve())

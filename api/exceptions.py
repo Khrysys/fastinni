@@ -1,4 +1,3 @@
-from unittest.mock import Base
 from fastapi import Request
 from fastapi.responses import JSONResponse
 

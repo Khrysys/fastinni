@@ -1,5 +1,17 @@
-def create_admin(emailAddress="admin@fastinni.dev", password='fastinni', display_name="Super Administrator", ENV_FILE='.env'):
-    with open(ENV_FILE, 'a') as f:
-        f.write(f'ADMIN_EMAIL={emailAddress}\n')
-        f.write(f'ADMIN_PASSWORD={password}\n')
-        f.write(f'ADMIN_DISPLAY_NAME={display_name}\n\n')
+
+from secrets import randbits
+from jwt import encode
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def create_admin(login_secret: str, env_file:str='.env'):
+    with open(env_file, 'a') as f:
+        token = str(encode({
+            "id": 0, 
+            "tag": 'Admin', 
+            "password": pwd_context.hash(randbits(64).to_bytes(int(8)).hex()), 
+            "google_id": None,
+            "admin": True,
+        }, login_secret))
+        f.write(f'ADMIN_LOGIN_JWT={token}')

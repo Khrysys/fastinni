@@ -113,3 +113,17 @@ GOOGLE_CLIENT_SECRET=REPLACE_THIS
 ```
 
 Now when running the app and navigating to `https://127.0.0.1:8000`, you should be able to click login and then click the Google icon at the bottom of the page. If you properly copied the client ID and secret, it should allow for you to sign in. 
+
+## Initializing Alembic
+
+There is one command that needs to be run in order for Alembic to be set up. Both involve a special class that is in `api/db/__init__.py`. 
+
+```sh
+python -m api/db db-init api.db
+```
+
+Afterward, every time that you update your database, run the following.
+
+```sh
+python -m api/db db-upgrade "Commit Message"
+```

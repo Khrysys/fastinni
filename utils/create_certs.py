@@ -1,19 +1,19 @@
-from OpenSSL import crypto, SSL
+from OpenSSL import crypto
 
 def cert_gen(
-    emailAddress="emailAddress",
-    commonName="commonName",
-    countryName="NT",
-    localityName="localityName",
-    stateOrProvinceName="stateOrProvinceName",
-    organizationName="organizationName",
-    organizationUnitName="organizationUnitName",
-    serialNumber=0,
-    validityStartInSeconds=0,
-    validityEndInSeconds=10*365*24*60*60,
-    KEY_FILE = "private.key",
-    CERT_FILE="selfsigned.crt",
-    ENV_FILE='.env'):
+    emailAddress:str="emailAddress",
+    commonName:str="commonName",
+    countryName:str="NT",
+    localityName:str="localityName",
+    stateOrProvinceName:str="stateOrProvinceName",
+    organizationName:str="organizationName",
+    organizationUnitName:str="organizationUnitName",
+    serialNumber:int=0,
+    validityStartInSeconds:int=0,
+    validityEndInSeconds:int=10*365*24*60*60,
+    KEY_FILE:str = "private.key",
+    CERT_FILE:str="selfsigned.crt",
+    ENV_FILE:str='.env'):
     #can look at generated file using openssl:
     #openssl x509 -inform pem -in selfsigned.crt -noout -text
     # create a key pair
@@ -38,13 +38,9 @@ def cert_gen(
         f.write(crypto.dump_certificate(crypto.FILETYPE_PEM, cert).decode("utf-8"))
     with open(KEY_FILE, "wt") as f:
         f.write(crypto.dump_privatekey(crypto.FILETYPE_PEM, k).decode("utf-8"))
-    import os
-    if not os.path.exists(".env"):
-        f = open(ENV_FILE, 'w')
-    else:
-        f = open(ENV_FILE, 'a')
+    f = open(ENV_FILE, 'a')
     f.write(f'SSL_KEYFILE={KEY_FILE}\nSSL_CERTFILE={CERT_FILE}\n\n')
     f.close()
 
-if __name__ == '_main__':
-    cert_gen()
+if __name__ == '__main__':
+    print('This script should not be run in standalone mode! run one of the generator files instead.')

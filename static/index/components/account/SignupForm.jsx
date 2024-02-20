@@ -43,12 +43,20 @@ export function SignupForm() {
             {
                 data: {
                     tag: val
+                },
+                statusCode: {
+                    302: function(response, status, xhr) {
+                        setTagAlert(true)
+                    },
+                    200: function(response, status, xhr) {
+                        setTagAlert(false)
+                    }
                 }
-            }
-        ).done(function(response) {
+            }, 
+        ).done(function(response, xhr) {
             
         }).fail(function(error) {
-            console.log(error)
+            
         })
     }
 
@@ -62,6 +70,8 @@ export function SignupForm() {
         })
     }, [])
 
+    console.log(tagAlert)
+
     return <>
         <header>
             <a>
@@ -74,8 +84,8 @@ export function SignupForm() {
             {
                 tagAlert ?
                 <div className="alert">
-                    <span class="closebtn" onclick={displayAlert(false)}>&times;</span>
-                    This is an alert box.
+                    <span class="closebtn" onClick={() => setTagAlert(false)}>&times;</span>
+                    {"User with tag " + tag + " already exists!"}
                 </div> : <></>
             }
 
