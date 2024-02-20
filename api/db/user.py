@@ -1,5 +1,6 @@
+from base64 import b64encode
 from enum import StrEnum
-from os import getenv
+from os import getenv, urandom
 from typing import Any, Optional
 from fastapi import Request
 from fastapi.responses import RedirectResponse
@@ -11,6 +12,8 @@ from passlib.context import CryptContext
 from api.exceptions import LoginException
 
 from sqlmodel.ext.asyncio.session import AsyncSession
+
+LOGIN_SECRET = b64encode(getenv('LOGIN_SECRET', urandom(64).hex()).encode())
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -67,8 +70,9 @@ class User(SQLModel, table=True):
             "password": self.password, 
             "google_id": self.google_id,
             "args": kwargs
-        }, getenv("LOGIN_SECRET")) # type: ignore
+        }, LOGIN_SECRET)
     
+
     @staticmethod
     async def try_login_user(*, tag: Optional[str] = None, email: Optional[str] = None, password: Optional[str] = None, google_id: Optional[str] = None, session: AsyncSession) -> Optional["User"]:
         if tag is not None:
@@ -96,12 +100,25 @@ class User(SQLModel, table=True):
             
     @staticmethod
     async def generate_login_response(request: Request, *, tag: Optional[str] = None, email: Optional[str] = None, password: Optional[str] = None, google_id: Optional[str] = None, session: AsyncSession) -> RedirectResponse:
-        user = await User.try_login_user(tag=tag, email=email, password=password, google_id=google_id, session=session)
-
-        # We can't proceed further if the login details are incorrect.
-        if user is None:
-            raise LoginException(message="Could not login user (credentials not found)", status_code=403)
+        user = None
+        try:
+            user = await User.try_login_user(tag=tag, email=email, password=password, google_id=google_id, session=session)
+        except LoginException: # We ignore the exceptions so that we can continue with the other cases.
+            pass
         
-        response = RedirectResponse(request.base_url.hostname) # type: ignore
-        response.set_cookie('login_jwt', user.generate_login_jwt())
+        # This is just to check if it's an admin user. This isn't used anywhere else, however there is a loading script in account/__init__.py
+        if password is not None and getenv('ADMIN_JWT') == encode({
+            "id": 0, 
+            "tag": tag, 
+            "password": pwd_context.hash(password), 
+            "google_id": None,
+            "admin": True,
+        }, LOGIN_SECRET):
+            response = RedirectResponse(str(request.base_url.hostname) + '/admin') # type: ignore
+        elif user is not None:
+            response = RedirectResponse(str(request.base_url.hostname))
+        else:
+            raise LoginException(message="Could not login user (credentials not found)", status_code=403)
+            
+        response.set_cookie('login_jwt', user.generate_login_jwt()) # type: ignore
         return response
