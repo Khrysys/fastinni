@@ -1,4 +1,5 @@
 # Environment files
+venv/
 *.env
 deploy.sh
 .DS_Store
