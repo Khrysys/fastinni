@@ -43,4 +43,4 @@ def cert_gen(
     f.close()
 
 if __name__ == '__main__':
-    print('This script should not be run in standalone mode! run one of the generator files instead.')
+    print('This script should not be run in standalone mode! Run one of the generator files instead.')
