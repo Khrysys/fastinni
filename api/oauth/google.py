@@ -1,18 +1,17 @@
-from datetime import datetime, timedelta
 from functools import lru_cache
 from json import dumps
 from os import getenv
 
 from fastapi import APIRouter, Request
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import RedirectResponse
 from oauthlib.oauth2 import WebApplicationClient
 from requests import get, post
-from sqlmodel import Session, SQLModel, select
+from sqlmodel import Session
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..security import validate_email_address
-from ..exceptions import OWaspValidationException
 
-from ..db import User, engine
+from ..db import User, db
 
 
 client = WebApplicationClient(getenv("GOOGLE_CLIENT_ID"))
@@ -30,11 +29,11 @@ def redirect_to_google_login(request: Request):
     
     # Use library to construct the request for Google login and provide
     # scopes that let you retrieve user's profile from Google
-    request_uri = client.prepare_request_uri(
+    request_uri: str = client.prepare_request_uri( # type: ignore
         authorization_endpoint,
         redirect_uri= str(request.url) + "callback",
         scope=["openid", "email", "profile"]
-    )
+    ) 
     
     return RedirectResponse(request_uri)
 
@@ -75,7 +74,8 @@ def google_login_callback(code: str, request: Request):
     else:
         return "User email not available or not verified by Google.", 400
     
-    user = User.try_login_user(email=users_email, google_id=unique_id)
+    with AsyncSession(engine) as session:
+        user = User.try_login_user(email=users_email, google_id=unique_id, session=session)
 
     if user is None:
         with Session(engine) as session:

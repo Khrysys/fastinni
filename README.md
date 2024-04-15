@@ -21,7 +21,7 @@ git clone https://github.com/khrysys/fastinni
 cd fastinni
 ```
 
-In order to install Fastinni properly on your machine, you must have Python 3.10 or later, NPM 9, and PostgresQL 15 already installed on your machine. Other NPM and Postgres versions may or may not work, but this project is tested on Python 3.11 and NPM 9.6.7. 
+In order to install Fastinni properly on your machine, you must have Python 3.10 or later, NPM 9, and PostgresQL 15 already installed on your machine.
 
 After installing those, install Poetry:
 

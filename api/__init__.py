@@ -19,6 +19,9 @@ from .account import app as account # type: ignore
 from .oauth import app as oauth # type: ignore
 from .security import app as security # type: ignore
 
+api.include_router(account)
+api.include_router(oauth)
+api.include_router(security)
 
 app = FastAPI(title="Fastinni", docs_url=None, redoc_url=None)
 app.mount('/api', api)
